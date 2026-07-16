@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Units — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .tag{
+    display:inline-block;
+    font-size:0.75rem;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-left:6px;
+    font-weight:bold;
+  }
+  .tag.abs{background:#f7816633; color:#ffa198;}
+  .tag.rel{background:#3fb95033; color:#7ee787;}
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>📏 CSS Units — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: px, %, vw/vh, em/rem, vmin/vmax</p>
+
+<h2>1. Absolute vs Relative Units</h2>
+<div class="card">
+  <table>
+    <tr><th>Type</th><th>Units</th><th>Behavior</th></tr>
+    <tr>
+      <td><strong>Absolute</strong> <span class="tag abs">Fixed</span></td>
+      <td><code>px</code>, <code>pt</code>, <code>cm</code>, <code>mm</code></td>
+      <td>Fixed values — screen size chahe kuch bhi ho, change nahi hote</td>
+    </tr>
+    <tr>
+      <td><strong>Relative</strong> <span class="tag rel">Dynamic</span></td>
+      <td><code>%</code>, <code>em</code>, <code>rem</code>, <code>vw</code>, <code>vh</code></td>
+      <td>Kisi doosri value (parent font-size, screen size waghera) ke basis par calculate hote hain</td>
+    </tr>
+  </table>
+  <p style="margin-top:10px;"><code>px</code> simple hone ki wajah se bohot use hota hai (<strong>1px = ek screen dot</strong>), lekin modern responsive design mein <strong>relative units zyada useful</strong> hote hain.</p>
+</div>
+
+<h2>2. Percentage (%)</h2>
+<div class="card">
+  <p>Element ki size uske <strong>parent ke relative</strong> calculate hoti hai.</p>
+  <pre>.box-1 { width: 50%; }   /* parent ka aadha width */
+.box-2 { width: 100px; } /* fixed, parent se koi lena dena nahi */</pre>
+  <p>Agar parent 500px wide ho, to <code>width: 50%</code> wala box <strong>250px</strong> ban jaata hai, jabke <code>width: 100px</code> wala box hamesha <strong>100px hi rahega</strong> — parent chahe jitna bhi bada/chhota ho.</p>
+  <div class="warn">
+    ⚠️ Agar parent ki width change ho, to percentage-based box <strong>automatically resize</strong> ho jaata hai (nayi width ka wahi percentage banaye rakhta hai) — isliye percentage responsive layouts ke liye acha hai.
+  </div>
+</div>
+
+<h2>3. box-sizing: border-box</h2>
+<div class="card">
+  <p>Agar element ki width 100% (ya koi fixed value) set ho aur usme border bhi ho, to <strong>horizontal scrollbar</strong> aa sakta hai (kyunke border width se bahar add hota hai).</p>
+  <pre>* {
+  box-sizing: border-box;
+}</pre>
+  <p>Isse border aur padding defined width ke <strong>andar hi</strong> included ho jaate hain, aur unwanted scrollbar khatam ho jaata hai.</p>
+</div>
+
+<h2>4. vw / vh (Viewport Units)</h2>
+<div class="card">
+  <p><code>vw</code> = viewport width, <code>vh</code> = viewport height. Ye screen ke <strong>current visible size</strong> ke relative hote hain.</p>
+  <pre>.card {
+  width: 100vw;  /* poori screen ki width */
+  width: 80vw;   /* screen width ka 80% */
+  height: 50vh;  /* screen height ka 50% */
+}</pre>
+  <div class="warn">
+    ⚠️ <code>100vw</code> kabhi kabhi <strong>horizontal scrollbar</strong> create kar sakta hai (agar scrollbar khud kuch space le raha ho) — isliye zaroorat ke hisaab se thora kam value (jaise 80vw) use karna behtar ho sakta hai.
+  </div>
+  <p>Fixed pixel values ke bajaye <code>vw</code>/<code>vh</code> use karne se layout <strong>har screen size par automatically adjust</strong> hota hai — pixel-based layout chhoti screens (jaise 1920px monitor) par break ho sakta hai.</p>
+</div>
+
+<h2>5. margin: auto (Centering)</h2>
+<div class="card">
+  <pre>.card {
+  margin: 20px auto;
+}</pre>
+  <p>Format: <code>top-bottom auto-left-right</code>. Isse element <strong>horizontally center</strong> ho jaata hai, aur top/bottom par 20px space bhi milti hai.</p>
+  <div class="warn">
+    ⚠️ <code>margin: auto</code> se centering sirf <strong>block-level elements</strong> par kaam karti hai — agar element inline hai, to ye center nahi hoga.
+  </div>
+</div>
+
+<h2>6. em vs rem</h2>
+<div class="card">
+  <h3>em — Parent Ke Relative</h3>
+  <pre>.paragraph {
+  font-size: 1em; /* parent ke font-size ka 100% */
+}</pre>
+  <ul>
+    <li>Container ka font-size 16px ho, aur paragraph <code>1em</code> use kare → paragraph bhi <strong>16px</strong> hoga (kyunke 1em = parent size ka 100%)</li>
+    <li>Container ka font-size 20px ho → 1em wala paragraph <strong>20px</strong> ho jaayega</li>
+    <li><code>2em</code> = parent ke font-size ka <strong>double</strong> (agar parent 20px ho, to paragraph 40px)</li>
+    <li>Agar parent par koi font-size set na ho, to browser ka <strong>default 16px</strong> use hota hai (isliye 2em = 32px)</li>
+  </ul>
+
+  <h3 style="margin-top:16px;">rem — Root Element Ke Relative</h3>
+  <pre>html { font-size: 12px; }
+.paragraph { font-size: 2rem; } /* 2 * 12px = 24px */</pre>
+  <ul>
+    <li>rem hamesha <code>&lt;html&gt;</code> (root) ke font-size ke relative hota hai, <strong>parent ke nahi</strong></li>
+    <li>Root 12px ho: <code>2rem</code> = 24px, <code>3rem</code> = 36px</li>
+    <li>Chahe kisi bhi parent element ka font-size change kar do, <strong>rem value change nahi hogi</strong> — sirf root font-size matter karta hai</li>
+  </ul>
+  <div class="warn">
+    ⚠️ Yehi core difference hai: <strong>em = parent ke relative</strong>, <strong>rem = hamesha root (html) ke relative</strong>.
+  </div>
+</div>
+
+<h2>7. vmin / vmax</h2>
+<div class="card">
+  <ul>
+    <li><code>vmin</code> — viewport ki <strong>chhoti side</strong> (width ya height, jo bhi smaller ho)</li>
+    <li><code>vmax</code> — viewport ki <strong>badi side</strong> (jo bhi larger ho)</li>
+  </ul>
+  <p><strong>Phone</strong> par height zyada hoti hai width se → <code>vmin</code> = width, aur <strong>desktop</strong> par width zyada hoti hai → <code>vmin</code> = height.</p>
+  <pre>.container {
+  width: 100vmin; /* smaller dimension ka 100% */
+}</pre>
+  <p>Isse layout <strong>screen ke shape</strong> (portrait/landscape) ke hisaab se bhi adapt hota hai — sirf size hi nahi.</p>
+</div>
+
+<h2>Quick Summary Table</h2>
+<div class="card">
+  <table>
+    <tr><th>Unit</th><th>Relative To</th></tr>
+    <tr><td><code>px</code></td><td>Kisi ke relative nahi (fixed)</td></tr>
+    <tr><td><code>%</code></td><td>Immediate parent ka size</td></tr>
+    <tr><td><code>vw</code> / <code>vh</code></td><td>Viewport width / height</td></tr>
+    <tr><td><code>em</code></td><td>Parent element ka font-size</td></tr>
+    <tr><td><code>rem</code></td><td>Root (html) element ka font-size</td></tr>
+    <tr><td><code>vmin</code></td><td>Viewport ki chhoti dimension</td></tr>
+    <tr><td><code>vmax</code></td><td>Viewport ki badi dimension</td></tr>
+  </table>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">Absolute aur relative units mein basic farq kya hai?</div>
+  <div class="a">Absolute units (px, pt, cm, mm) fixed values hoti hain, screen size se independent. Relative units (%, em, rem, vw, vh) kisi aur value (parent font-size, screen size) ke basis par calculate hoti hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">Agar parent div 500px wide ho, to width: 50% wala box kitna wide hoga?</div>
+  <div class="a">250px — kyunke percentage parent ki width ka relative calculate hoti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">Parent ki width change karne se width: 100px wala box aur width: 50% wala box, dono ka kya hota hai?</div>
+  <div class="a">width: 100px wala box hamesha 100px hi rahega (fixed). width: 50% wala box automatically resize ho jaayega taake nayi parent width ka 50% bana rahe.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">box-sizing: border-box kis problem ko solve karta hai?</div>
+  <div class="a">Jab element ki fixed width ho aur usme border bhi ho, to border defined width se bahar add hoke unwanted horizontal scrollbar create kar sakta hai. border-box lagane se border aur padding width ke andar hi included ho jaate hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">vw aur vh kis cheez ke relative hote hain?</div>
+  <div class="a">Viewport (browser window) ki current visible width aur height ke relative — vw = viewport width, vh = viewport height.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">Pixel-based fixed layout chhoti screen (jaise 1920px monitor) par kyun break ho sakta hai?</div>
+  <div class="a">Kyunke pixel values fixed hoti hain aur screen size ke hisaab se adjust nahi hoti — agar defined pixel width screen se zyada ho, to layout overflow ho jaata hai ya break ho jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">margin: 20px auto; ka format kya represent karta hai?</div>
+  <div class="a">Pehli value (20px) top aur bottom margin hai. auto left aur right margin hai jo element ko horizontally center kar deta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">margin: auto centering sirf kis type ke elements par kaam karti hai?</div>
+  <div class="a">Sirf block-level elements par — inline elements is tarah center nahi hote.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">em unit kis cheez ke relative calculate hota hai?</div>
+  <div class="a">Apne immediate parent element ke font-size ke relative — 1em = parent ke font-size ka 100%.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">Agar parent ka font-size 20px ho aur paragraph 2em use kare, to paragraph ka font-size kya hoga?</div>
+  <div class="a">40px (2 × 20px).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">Agar parent par koi font-size explicitly set na ho aur paragraph 2em use kare, to font-size kya hoga?</div>
+  <div class="a">32px — kyunke browser ka default font-size 16px hota hai, aur 2 × 16px = 32px.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12">rem kis cheez ke relative hota hai?</div>
+  <div class="a">Root element (html tag) ke font-size ke relative — parent ke font-size se koi lena dena nahi.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="13">Agar html ka font-size 12px ho aur paragraph 3rem use kare, to font-size kya hoga? Agar parent ka font-size 20px kar diya jaaye to kya badlega?</div>
+  <div class="a">3rem = 3 × 12px = 36px. Parent ka font-size 20px karne se koi farq nahi padega — paragraph 36px hi rahega, kyunke rem sirf root se calculate hota hai, parent se nahi.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="14">em aur rem mein core difference ek line mein batao.</div>
+  <div class="a">em parent element ke font-size ke relative hota hai, rem hamesha root (html) element ke font-size ke relative hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="15">vmin aur vmax mein kya farq hai?</div>
+  <div class="a">vmin = viewport ki chhoti dimension (width ya height, jo bhi smaller ho). vmax = viewport ki badi dimension (jo bhi larger ho).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="16">Phone (portrait mode) par vmin generally kaunsi dimension ke barabar hota hai, aur desktop par?</div>
+  <div class="a">Phone par height width se zyada hoti hai, isliye vmin = width. Desktop par width height se zyada hoti hai, isliye vmin = height.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

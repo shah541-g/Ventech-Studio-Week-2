@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Box Model — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --content-color:#1f6feb33;
+    --padding-color:#3fb95033;
+    --border-color:#d2992233;
+    --margin-color:#f7816633;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; }
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  .tag{
+    display:inline-block;
+    font-size:0.75rem;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-left:8px;
+    font-weight:bold;
+  }
+  .tag.content{background:var(--content-color); color:#79c0ff;}
+  .tag.padding{background:var(--padding-color); color:#7ee787;}
+  .tag.border{background:var(--border-color); color:#e3b341;}
+  .tag.margin{background:var(--margin-color); color:#ffa198;}
+
+  /* Recall section */
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{
+    font-weight:600;
+    color:var(--text);
+  }
+  .recall-box .q::before{
+    content:"Q" attr(data-num) ". ";
+    color:var(--accent);
+  }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .recall-box .hint{
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+  .legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:0.85rem;}
+  .legend span{display:flex; align-items:center; gap:6px;}
+  .swatch{width:14px; height:14px; border-radius:3px; display:inline-block;}
+</style>
+</head>
+<body>
+
+<h1>📦 CSS Box Model — Active Recall Notes</h1>
+<p class="hint" style="color:var(--muted)">Video: CSS Box Model basics (margin, border, padding, content, box-sizing)</p>
+
+<h2>1. Box Model Kya Hai?</h2>
+<div class="card">
+  <p>HTML ka <strong>har element ek box</strong> hota hai. CSS se hum us box ki properties customize kar sakte hain. Har box <strong>4 parts</strong> se milkar bana hota hai:</p>
+  <ul>
+    <li><strong>Content</strong> <span class="tag content">Content</span> — actual content (jaise text)</li>
+    <li><strong>Padding</strong> <span class="tag padding">Padding</span> — content aur border ke darmiyan ki space</li>
+    <li><strong>Border</strong> <span class="tag border">Border</span> — box ke around ki line</li>
+    <li><strong>Margin</strong> <span class="tag margin">Margin</span> — is box aur baaki boxes ke darmiyan ki space</li>
+  </ul>
+</div>
+
+<div class="card">
+  <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:480px; display:block; margin:0 auto;">
+    <!-- Margin -->
+    <rect x="10" y="10" width="480" height="300" fill="#f7816622" stroke="#f78166" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="20" y="28" fill="#ffa198" font-size="13" font-family="sans-serif">margin</text>
+
+    <!-- Border -->
+    <rect x="60" y="55" width="380" height="215" fill="#d2992222" stroke="#d29922" stroke-width="2"/>
+    <text x="70" y="72" fill="#e3b341" font-size="13" font-family="sans-serif">border</text>
+
+    <!-- Padding -->
+    <rect x="90" y="90" width="320" height="150" fill="#3fb95022" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="100" y="106" fill="#7ee787" font-size="13" font-family="sans-serif">padding</text>
+
+    <!-- Content -->
+    <rect x="140" y="130" width="220" height="80" fill="#1f6feb44" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="250" y="175" fill="#79c0ff" font-size="14" font-family="sans-serif" text-anchor="middle">content</text>
+  </svg>
+  <div class="legend">
+    <span><span class="swatch" style="background:#1f6feb;"></span>Content</span>
+    <span><span class="swatch" style="background:#3fb950;"></span>Padding</span>
+    <span><span class="swatch" style="background:#d29922;"></span>Border</span>
+    <span><span class="swatch" style="background:#f78166;"></span>Margin</span>
+  </div>
+</div>
+
+<h2>2. Code Example</h2>
+<div class="card">
+  <pre>div {
+  margin: 40px;
+  border: 2px solid red;
+  padding: 20px;
+}</pre>
+  <p>Isse teeno containers ke darmiyan spacing (margin), red border, aur content ke around padding aa jaata hai.</p>
+</div>
+
+<h2>3. Padding / Margin — Shorthand Values</h2>
+<div class="card">
+  <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+    <tr style="border-bottom:1px solid var(--border);">
+      <th style="text-align:left; padding:6px; color:var(--accent);">Values</th>
+      <th style="text-align:left; padding:6px; color:var(--accent);">Matlab</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:6px;"><code>padding: 10px 20px;</code></td>
+      <td style="padding:6px;">1st = top &amp; bottom, 2nd = left &amp; right</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:6px;"><code>padding: 10px 20px 30px;</code></td>
+      <td style="padding:6px;">1st = top, 2nd = left &amp; right, 3rd = bottom</td>
+    </tr>
+    <tr>
+      <td style="padding:6px;"><code>padding: 10px 20px 30px 40px;</code></td>
+      <td style="padding:6px;">1st = top, 2nd = right, 3rd = bottom, 4th = left (clockwise)</td>
+    </tr>
+  </table>
+  <p style="margin-top:10px;"><strong>Margin bhi bilkul isi tarah kaam karta hai.</strong></p>
+  <p>Specific side ke liye individual properties bhi use ho sakti hain:</p>
+  <pre>margin-bottom: 20px;
+margin-top: 20px;
+margin-left: 40px;
+padding-bottom: 15px;
+padding-top: 15px;</pre>
+</div>
+
+<h2>4. Box Sizing</h2>
+<div class="card">
+  <p><code>box-sizing</code> ye decide karta hai ke box ki <strong>width kaise calculate</strong> hogi.</p>
+  <ul>
+    <li><strong>content-box</strong> (default) — width sirf content ki hoti hai; padding aur border <em>alag se add</em> hote hain (total width badh jaati hai)</li>
+    <li><strong>border-box</strong> — width mein padding aur border <em>included</em> hote hain (box apni defined width se bahar nahi jaata)</li>
+  </ul>
+  <p style="color:var(--muted); font-size:0.9rem;">Example: agar width 100px hai aur box-sizing border-box hai, to padding+border isi 100px ke andar fit hoga — box chhota dikhega.</p>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">CSS box model ke 4 parts kaunse hain?</div>
+  <div class="a">Content, Padding, Border, Margin.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">Padding aur margin mein kya farq hai?</div>
+  <div class="a">Padding = content aur border ke darmiyan space. Margin = is box aur dusre boxes ke darmiyan space (outside border).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3"><code>margin: 10px 20px 30px 40px;</code> ka matlab kya hai?</div>
+  <div class="a">Top = 10px, Right = 20px, Bottom = 30px, Left = 40px (clockwise order, top se start).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">Agar sirf 2 values dein <code>padding: 10px 20px;</code>, to kya hoga?</div>
+  <div class="a">1st value (10px) = top &amp; bottom padding. 2nd value (20px) = left &amp; right padding.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">Kisi ek specific side (jaise sirf left) par margin dene ke liye kaunsi property use hogi?</div>
+  <div class="a"><code>margin-left</code>. Isi tarah margin-top, margin-right, margin-bottom bhi hoti hain — aur padding ke liye bhi same pattern.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">box-sizing ki default value kya hoti hai?</div>
+  <div class="a"><code>content-box</code> — is mein width sirf content ki calculate hoti hai, padding aur border box ki total width mein add hoke usse bada kar dete hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7"><code>border-box</code> aur <code>content-box</code> mein kya farq hai?</div>
+  <div class="a">border-box: defined width mein padding + border already included hote hain (box bahar nahi badhta). content-box: padding + border defined width ke <em>alawa</em> add hote hain (box overall bada ho jaata hai).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">Agar width 100px ho aur box-sizing = border-box ho, aur usme padding + border bhi ho, to box screen par kaisa dikhega?</div>
+  <div class="a">Box chhota dikhega — kyunke padding aur border ke liye alag se space nahi milta, wo 100px ke andar hi accommodate hote hain (content area apne aap shrink ho jaata hai).</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

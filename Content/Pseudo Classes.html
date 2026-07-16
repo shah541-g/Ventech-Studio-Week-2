@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Pseudo-classes — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+
+  /* live demos */
+  .demo-btn{
+    background:#21262d; color:#c9d1d9; border:1px solid var(--border);
+    padding:8px 18px; border-radius:6px; cursor:pointer; font-size:1rem;
+    transition: font-size 0.15s, background 0.15s;
+  }
+  .demo-btn:hover{ font-size:1.15rem; background:var(--green); color:#0d1117; }
+  .demo-btn:active{ background:#f85149; }
+
+  .demo-link{ color:#79c0ff; }
+  .demo-link:hover{ color:#a5d6ff; font-size:1.1em; }
+  .demo-link:active{ color:#1f6feb; font-size:1.1em; }
+  .demo-link:visited{ color:#8b949e; }
+
+  .demo-list{ list-style:none; padding:0; max-width:200px; }
+  .demo-list li{ padding:4px 8px; color:#8b949e; border-radius:4px; }
+  .demo-list li:hover{ background:#f4e04d; color:#0d1117; }
+  .demo-list li:not(:hover){ color:#8b949e; }
+
+  .demo-greet{
+    background:#1f6feb22; border:1px solid var(--border); border-radius:8px;
+    padding:14px; text-align:center; cursor:pointer;
+  }
+  .demo-greet p{ display:none; background:#58a6ff33; padding:10px; border-radius:6px; margin-top:8px; }
+  .demo-greet:hover p{ display:block; }
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎯 CSS Pseudo-classes — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: hover, active, link, visited, not, nth-child, display:none/block trick</p>
+
+<h2>1. Pseudo-class Kya Hai?</h2>
+<div class="card">
+  <p>Pseudo-class ek <strong>keyword</strong> hai jo selector ke sath add hoti hai — ye element ke <strong>behavior ko us waqt modify</strong> karti hai jab wo <strong>ek specific state</strong> mein ho (jaise hover hona, click hona, waghera).</p>
+  <pre>selector:pseudo-class {
+  /* styles */
+}</pre>
+</div>
+
+<h2>2. :hover</h2>
+<div class="card">
+  <pre>button:hover {
+  font-size: 1.1em;
+  background-color: green;
+}</pre>
+  <p>Jab mouse cursor element ke upar ho, tab styles apply hoti hain.</p>
+  <div class="demo-btn">Hover Me</div>
+</div>
+
+<h2>3. :active</h2>
+<div class="card">
+  <pre>button:active {
+  background-color: red;
+}</pre>
+  <p>Jab element par mouse button <strong>currently click/hold</strong> ho raha ho (yani press-down state).</p>
+  <p style="color:var(--muted); font-size:0.9rem;">Upar wale button ko click-hold karke dekho — background red ho jaayega.</p>
+</div>
+
+<h2>4. Link States — :link, :hover, :active, :visited</h2>
+<div class="card">
+  <p>Anchor tags (<code>&lt;a&gt;</code>) ke 4 special states hote hain:</p>
+  <pre>a:link    { color: lightblue; }  /* default, unvisited link */
+a:hover   { color: skyblue; font-size: 1.1em; }
+a:active  { color: darkblue; font-size: 1.1em; }
+a:visited { color: gray; }       /* already click ho chuka link */</pre>
+  <table>
+    <tr><th>Pseudo-class</th><th>Kab Apply Hoti Hai</th></tr>
+    <tr><td><code>:link</code></td><td>Normal, unvisited link state</td></tr>
+    <tr><td><code>:hover</code></td><td>Mouse link ke upar ho</td></tr>
+    <tr><td><code>:active</code></td><td>Link click-hold ho rahi ho</td></tr>
+    <tr><td><code>:visited</code></td><td>User pehle is link par click kar chuka ho (default purple ki jagah)</td></tr>
+  </table>
+  <p><a href="#" class="demo-link" onclick="return false;">Demo Link (hover / click-hold karke dekho)</a></p>
+</div>
+
+<h2>5. :not()</h2>
+<div class="card">
+  <pre>li:hover {
+  background-color: yellow;
+}
+
+li:not(:hover) {
+  color: gray;
+}</pre>
+  <p><code>:not()</code> ka matlab: <strong>"jo is state mein NAHI hai"</strong> — yani opposite condition select karta hai. Yahan: jo list item currently hover nahi ho raha, uska color gray rahega.</p>
+  <ul class="demo-list">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+    <li>Item 4</li>
+  </ul>
+  <p style="color:var(--muted); font-size:0.85rem;">List items par hover karke dekho — hovered item yellow, baaki gray.</p>
+</div>
+
+<h2>6. :nth-child()</h2>
+<div class="card">
+  <pre>li:nth-child(1) { color: yellow; } /* 1st element */
+li:nth-child(3) { color: yellow; } /* 3rd element */
+li:nth-child(9) { color: yellow; } /* 9th element */</pre>
+  <p>Parentheses ke andar value <strong>kaunsa child element select</strong> hoga wo decide karti hai (counting <strong>1 se start</strong> hoti hai).</p>
+  <table>
+    <tr><th>Value</th><th>Kya Select Karta Hai</th></tr>
+    <tr><td><code>odd</code></td><td>Sab odd-numbered elements (1st, 3rd, 5th...)</td></tr>
+    <tr><td><code>even</code></td><td>Sab even-numbered elements (2nd, 4th, 6th...)</td></tr>
+    <tr><td><code>3n</code></td><td>Har teesra element (3rd, 6th, 9th...)</td></tr>
+    <tr><td><code>4n</code></td><td>Har chautha element (4th, 8th, 12th...)</td></tr>
+    <tr><td><code>3n + 1</code></td><td>Har teesra element, lekin 1st se start (1st, 4th, 7th...)</td></tr>
+    <tr><td><code>3n + 2</code></td><td>Har teesra element, 2nd se start (2nd, 5th, 8th...)</td></tr>
+  </table>
+  <div class="warn">
+    ⚠️ <code>nth-child</code> JavaScript ke sath bhi bohot handy hai — parentheses ke andar ki value ko ek variable se dynamically control kiya ja sakta hai.
+  </div>
+</div>
+
+<h2>7. hover Se Hidden Content Reveal Karna (Dropdown Trick)</h2>
+<div class="card">
+  <pre>.greeting p {
+  display: none;
+}
+
+.greeting:hover p {
+  display: block;
+}</pre>
+  <p>Ye trick <strong>dropdown menus</strong> banane ke liye bohot common hai — jab tak hover na ho, content <code>display: none</code> (poori tarah hidden aur layout se bahar) rehta hai. Hover hote hi <code>display: block</code> ho jaata hai aur content dikh jaata hai.</p>
+  <div class="demo-greet">
+    Hover Here
+    <p>Hello! 👋 Ye hidden message hai jo hover par reveal hui.</p>
+  </div>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">Pseudo-class kya hoti hai?</div>
+  <div class="a">Ek keyword jo selector ke sath add hoti hai (colon ke sath) aur element ka behavior modify karti hai jab wo kisi specific state mein ho, jaise hover ya click.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">:hover kis condition mein trigger hoti hai?</div>
+  <div class="a">Jab mouse cursor us element ke upar ho.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">:active kis condition mein trigger hoti hai?</div>
+  <div class="a">Jab element par mouse button currently press/hold kiya ja raha ho (click-and-hold state).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">Anchor tags ke 4 special pseudo-class states kaunse hain?</div>
+  <div class="a">:link (default/unvisited), :hover (mouse upar), :active (click-hold), :visited (pehle click ho chuka link).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">:visited pseudo-class kis liye use hoti hai?</div>
+  <div class="a">Un links ka styling change karne ke liye jinhe user pehle hi click kar chuka ho (by default browser inhe purple dikhata hai).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">:not() pseudo-class kya karta hai?</div>
+  <div class="a">Opposite condition select karta hai — jo elements specified state mein NAHI hain, unhe target karta hai. Jaise li:not(:hover) un list items ko select karega jo currently hover nahi ho rahe.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">nth-child() mein counting kis number se start hoti hai?</div>
+  <div class="a">1 se — pehla element nth-child(1) hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">nth-child(odd) aur nth-child(even) kya select karte hain?</div>
+  <div class="a">odd: sab odd-numbered elements (1st, 3rd, 5th...). even: sab even-numbered elements (2nd, 4th, 6th...).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">nth-child(3n) kya select karta hai?</div>
+  <div class="a">Har teesra element — 3rd, 6th, 9th, waghera.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">nth-child(3n + 1) ka behavior nth-child(3n) se kaise different hai?</div>
+  <div class="a">3n har teesra element select karta hai starting from 3rd (3, 6, 9...). 3n + 1 offset add karta hai, isliye ye 1st se start hokar har teesra element select karta hai (1, 4, 7...).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">Dropdown menu jaisa hidden-content-on-hover effect banane ke liye kaunsa combination use hota hai?</div>
+  <div class="a">Content par display: none; (default hidden) aur parent element par :hover ke through us content ko display: block; kar dena.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12">nth-child() ki value JavaScript ke sath kyun handy hoti hai?</div>
+  <div class="a">Kyunke parentheses ke andar ki value ko ek variable se dynamically set/control kiya ja sakta hai, jisse selection JS logic ke hisaab se change ho sakti hai.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

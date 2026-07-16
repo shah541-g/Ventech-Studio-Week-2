@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Position Property — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .demo-label{ font-size:11px; fill:var(--muted); font-family:sans-serif;}
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>📌 CSS <code>position</code> Property — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: static, relative, fixed, sticky, absolute + z-index</p>
+
+<h2>1. Overview — 5 Possible Values</h2>
+<div class="card">
+  <ul>
+    <li><code>static</code> — default, koi effect nahi</li>
+    <li><code>relative</code></li>
+    <li><code>fixed</code></li>
+    <li><code>sticky</code></li>
+    <li><code>absolute</code></li>
+  </ul>
+  <p><code>static</code> ke ilawa baaki sab par <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>, aur <code>z-index</code> properties use ki ja sakti hain element ko exactly position karne ke liye.</p>
+</div>
+
+<h2>2. position: relative</h2>
+<div class="card">
+  <p>Element ko uski <strong>apni normal (static) position ke relative</strong> offset karta hai.</p>
+  <pre>.box {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}</pre>
+  <ul>
+    <li><code>top: 30px</code> → element apni original position se <strong>30px neeche push</strong> hoga</li>
+    <li><code>left: 30px</code> → element apni original position se <strong>30px right push</strong> hoga</li>
+    <li>Values jitni zyada, element utna hi door push hoga</li>
+    <li><code>bottom</code> ya <code>right</code> bhi use ho sakte hain — par ye element ko screen se bahar push kar sakte hain (kyunke hamesha static position se "away" push hota hai)</li>
+  </ul>
+</div>
+
+<h2>3. position: fixed</h2>
+<div class="card">
+  <p>Element ko <strong>window/viewport ke sath fix</strong> kar deta hai — scrollable page par ye <strong>user ke saath scroll karega</strong> (follow karega), kyunke ye ek <strong>naye stacking context / layer</strong> par chala jaata hai.</p>
+  <div class="warn">
+    ⚠️ Behavior change: fixed elements mein <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code> ab element ki apni position ke relative nahi, balke <strong>poori window ke relative</strong> hote hain.
+  </div>
+  <ul>
+    <li><code>right: 0</code> → element right edge se 0px door (yani chipka hua)</li>
+    <li><code>top: 0</code> → element top edge se 0px door</li>
+  </ul>
+  <h3>Percentage Values + Centering Trick</h3>
+  <p>Fixed positioning mein percentage values bhi use ho sakti hain. Center karne ke liye:</p>
+  <pre>.box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}</pre>
+  <ul>
+    <li>Sirf <code>top: 50%; left: 50%;</code> lagane se element ka <strong>top-left corner</strong> center hota hai (element ka origin), poora element center nahi hota</li>
+    <li>Isko fix karne ke liye <code>transform: translate(-50%, -50%)</code> add karo — ye element ko uski <strong>apni width/height ke 50%</strong> jitna wapas push karta hai, taake actual center align ho jaaye</li>
+  </ul>
+  <p style="color:var(--muted); font-size:0.9rem;">Ye wahi trick hai jo cookie-consent popups aksar center karne ke liye use karte hain.</p>
+</div>
+
+<h2>4. position: sticky</h2>
+<div class="card">
+  <p>Normal element ki tarah behave karta hai, lekin scrollable container mein <strong>ek specific point tak pohanchne par</strong> ye "chipak" (stick) jaata hai — jaise fixed element hota hai.</p>
+  <ul>
+    <li>Sticking point ko <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code> se define karte hain</li>
+    <li>Stick hone ke baad element bhi <strong>naye stacking context</strong> par chala jaata hai (fixed jaisa)</li>
+  </ul>
+  <div class="warn">
+    ⚠️ Fixed aur sticky mein farq: fixed <strong>hamesha</strong> fixed rehta hai. Sticky sirf <strong>uss point tak pohanchne ke baad</strong> stick hota hai, us se pehle normal flow mein rehta hai.
+  </div>
+</div>
+
+<h2>5. position: absolute</h2>
+<div class="card">
+  <p>Sab se important position value. Ek absolute-positioned element hamesha apne <strong>nearest ancestor</strong> ke relative position hota hai — jis ancestor ka <strong>koi bhi position value specified</strong> ho (static ke ilawa).</p>
+  <h3>Parent-Child Setup</h3>
+  <pre>.parent {
+  position: relative; /* reference point banata hai */
+}
+.child {
+  position: absolute;
+  top: 0;
+  right: 0;
+}</pre>
+  <ul>
+    <li>Parent par <code>position: relative</code> lagana best practice hai, kyunke iska khud par almost <strong>koi visual impact nahi</strong> hota (jab tak top/left/right/bottom na diya jaaye)</li>
+    <li>Child par <code>top: 0; right: 0;</code> → child parent ke <strong>top-right corner</strong> mein position ho jaata hai</li>
+  </ul>
+  <div class="warn">
+    ⚠️ Agar parent par koi positioned value (relative/absolute/fixed) na ho, to absolute child <strong>body ke relative</strong> position hoga — jo aksar unwanted result deta hai.
+  </div>
+  <p><strong>Practical example:</strong> search bar ke andar ek button ko position karna — button par <code>position: absolute</code> aur search bar wrapper par <code>position: relative</code>.</p>
+</div>
+
+<h2>6. Stacking Context aur z-index</h2>
+<div class="card">
+  <p><code>fixed</code> aur <code>absolute</code> dono elements ko ek <strong>naye stacking context</strong> mein daal dete hain — matlab ye baaki website ke elements ke <strong>upar (cover)</strong> aa sakte hain.</p>
+  <p><code>z-index</code> se layers ka order control karte hain:</p>
+  <ul>
+    <li><strong>Negative values</strong> → element ko baaki elements ke <strong>peeche</strong> bhejte hain</li>
+    <li><strong>Higher (positive) values</strong> → element ko baaki elements ke <strong>upar</strong> bhejte hain</li>
+  </ul>
+  <p><strong>Use-cases:</strong> navigation bar, sidebar, overlay, popup — inko baaki website se <strong>higher z-index</strong> dena chahiye taake ye hamesha upar dikhein.</p>
+</div>
+
+<h2>Quick Comparison Table</h2>
+<div class="card">
+  <table>
+    <tr><th>Value</th><th>Reference Point</th><th>Naya Stacking Context?</th></tr>
+    <tr><td><code>static</code></td><td>—</td><td>❌</td></tr>
+    <tr><td><code>relative</code></td><td>Apni khud ki original (static) position</td><td>❌ (generally)</td></tr>
+    <tr><td><code>fixed</code></td><td>Poori window/viewport</td><td>✅</td></tr>
+    <tr><td><code>sticky</code></td><td>Scrollable container + fixed jaisa jab stick ho</td><td>✅ (jab stick ho)</td></tr>
+    <tr><td><code>absolute</code></td><td>Nearest positioned ancestor (warna body)</td><td>✅</td></tr>
+  </table>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">position ki 5 possible values kaunsi hain?</div>
+  <div class="a">static, relative, fixed, sticky, absolute.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">position: relative mein top aur left kis cheez ke relative hote hain?</div>
+  <div class="a">Element ki apni normal (static) position ke relative — yani jahan wo hota agar position static hoti.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">position: relative ke sath top: 30px aur left: 30px dene se element kis taraf move hoga?</div>
+  <div class="a">Apni original position se 30px neeche (down) aur 30px right (dayein) push hoga.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">position: fixed lagane se scroll karne par element ka kya hota hai?</div>
+  <div class="a">Element user ke saath follow karta hai — screen par fix rehta hai, scroll hone par apni jagah nahi chhorta, kyunke ye ek naye stacking context/layer par chala jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">position: fixed mein top/left/right/bottom kis cheez ke relative hote hain?</div>
+  <div class="a">Poori window/viewport ke relative — element ki apni position ke relative nahi (jaise relative mein hota tha).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">Fixed element ko screen ke bilkul center mein karne ke liye kya karna padta hai?</div>
+  <div class="a">top: 50%; left: 50%; dene ke baad transform: translate(-50%, -50%); bhi lagana padta hai, warna sirf element ka top-left corner center hota hai, poora element nahi.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">top: 50%; left: 50%; akele lagane se element center kyun nahi hota?</div>
+  <div class="a">Kyunke ye sirf element ke top-left corner (origin) ko screen ke 50%/50% point par le jaata hai — element ka baaki hissa us point se aage right aur neeche extend hota hai, isliye visually center nahi lagta.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">position: sticky, fixed se kaise different hai?</div>
+  <div class="a">Sticky element normal element ki tarah behave karta hai jab tak scrolling mein wo specified sticking point tak nahi pohanchta — us point ke baad hi ye fixed element ki tarah chipak (stick) jaata hai. Fixed hamesha se hi fixed hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">position: absolute wala element kis cheez ke relative position hota hai?</div>
+  <div class="a">Apne nearest ancestor ke relative jiska koi position value specified ho (static ke alawa) — agar koi bhi ancestor positioned na ho, to body ke relative position hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">Parent-child absolute positioning setup mein parent par kaunsi position value best rehti hai aur kyun?</div>
+  <div class="a">position: relative — kyunke iska parent par khud koi visual impact nahi padta (jab tak top/left/right/bottom explicitly na diye jaayen), sirf ye child ke liye reference point ban jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">Agar parent par position: relative na lagayi jaaye aur child par position: absolute ho, to child kahan position hoga?</div>
+  <div class="a">Body ke relative position hoga, jo aksar unwanted/unexpected layout result deta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12">Kaunse do position values naya stacking context create karte hain jinki wajah se element baaki content ko cover kar sakta hai?</div>
+  <div class="a">fixed aur absolute (aur sticky bhi jab wo stick ho jaaye).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="13">z-index ki negative aur higher values ka kya effect hota hai?</div>
+  <div class="a">Negative value element ko baaki elements ke peeche bhej deti hai. Higher (positive) value element ko baaki elements ke upar la deti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="14">Navigation bar, sidebar, overlay/popup jaise elements ko kis tarah ka z-index dena chahiye aur kyun?</div>
+  <div class="a">Higher z-index — taake ye website ke baaki content ke upar hamesha visible rahein aur kisi aur element se cover na hon.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

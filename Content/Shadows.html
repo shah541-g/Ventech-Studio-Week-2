@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Shadows — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .demo{
+    padding:26px;
+    text-align:center;
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    margin-top:10px;
+  }
+  .demo h3{ margin:0; font-size:1.8rem; color:#e6edf3; }
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🌑 CSS Shadows — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: text-shadow aur box-shadow</p>
+
+<h2>1. text-shadow — Syntax</h2>
+<div class="card">
+  <pre>h1 {
+  text-shadow: 1px 1px;
+}</pre>
+  <p>Kam se kam <strong>2 numbers</strong> chahiye:</p>
+  <ul>
+    <li><strong>1st value</strong> — <strong>horizontal offset</strong> (shadow left/right kitna move hoga)</li>
+    <li><strong>2nd value</strong> — <strong>vertical offset</strong> (shadow upar/neeche kitna move hoga)</li>
+  </ul>
+  <div class="demo">
+    <h3 style="text-shadow: 3px 5px red;">Sample Text</h3>
+  </div>
+  <ul>
+    <li>Horizontal value badhane se (jaise 2, 5, 10, 50) shadow <strong>right</strong> ki taraf zyada move hota hai</li>
+    <li>Vertical value badhane se shadow <strong>neeche (down)</strong> ki taraf zyada move hota hai</li>
+  </ul>
+</div>
+
+<h2>2. Blur Radius (3rd Value — Optional)</h2>
+<div class="card">
+  <pre>h1 {
+  text-shadow: 3px 5px 5px;
+}</pre>
+  <ul>
+    <li>3rd value = <strong>blur amount</strong></li>
+    <li>Zyada blur (jaise 100px) shadow ko itna faila deta hai ke wo <strong>dikhna hi band</strong> ho jaata hai</li>
+    <li>Chhoti values (1–5px) usually ek acha, subtle blur effect dete hain</li>
+  </ul>
+</div>
+
+<h2>3. Color (4th Value — Optional)</h2>
+<div class="card">
+  <pre>h1 {
+  text-shadow: 3px 5px 5px red;
+}</pre>
+  <p>Agar color na diya jaaye, to <strong>default text color</strong> ka hi shadow ban jaata hai.</p>
+</div>
+
+<h2>4. Multiple Shadows (Comma-Separated)</h2>
+<div class="card">
+  <p><code>text-shadow</code> mein <strong>ek se zyada shadows</strong> comma se separate karke di ja sakti hain:</p>
+  <pre>h1 {
+  text-shadow:
+    3px 5px 5px red,
+    -3px -5px 5px blue;
+}</pre>
+  <p><strong>Negative offset values</strong> (jaise <code>-3px -5px</code>) shadow ko <strong>upar aur left</strong> ki taraf push karti hain — isse ek doosri opposite-direction shadow ban jaati hai, jo different color se distinct dikhti hai.</p>
+  <div class="demo">
+    <h3 style="text-shadow: 3px 5px 5px red, -3px -5px 5px #58a6ff;">Double Shadow</h3>
+  </div>
+</div>
+
+<h2>5. box-shadow — Non-Text Elements Ke Liye</h2>
+<div class="card">
+  <p><code>box-shadow</code> ka syntax/process <strong>bilkul <code>text-shadow</code> jaisa hi</strong> hai, lekin ye divs jaise non-text elements par use hota hai.</p>
+  <pre>#box-1 {
+  width: 100px;
+  height: 100px;
+  background-color: #eee;
+  box-shadow: 3px 3px 5px;
+}</pre>
+  <ul>
+    <li><strong>1st value</strong> — horizontal offset (3px)</li>
+    <li><strong>2nd value</strong> — vertical offset (3px)</li>
+    <li><strong>3rd value</strong> — blur radius (5px)</li>
+    <li><strong>4th value (optional)</strong> — color</li>
+  </ul>
+  <p>Isse box par ek <strong>"3D pop" effect</strong> aa jaata hai — jaise box screen se thora uthta hua lag raha ho.</p>
+</div>
+
+<h2>6. text-shadow vs box-shadow — Kab Kya Use Karein</h2>
+<div class="card">
+  <table>
+    <tr><th>Property</th><th>Kis Par Use Hoti Hai</th></tr>
+    <tr><td><code>text-shadow</code></td><td>Text elements (h1, p, span waghera)</td></tr>
+    <tr><td><code>box-shadow</code></td><td>Non-text elements (div, button, card waghera)</td></tr>
+  </table>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">text-shadow ke liye minimum kitni values chahiye, aur wo kya represent karti hain?</div>
+  <div class="a">Kam se kam 2 values — pehli horizontal offset (left/right movement), dusri vertical offset (up/down movement).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">text-shadow: 1px 1px; se shadow kis direction mein move hota hai?</div>
+  <div class="a">1px right (horizontal offset) aur 1px down (vertical offset).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">text-shadow ki 3rd value kya control karti hai?</div>
+  <div class="a">Blur radius — shadow kitni blur (faili hui) dikhegi.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">Agar blur value bohot zyada (jaise 100px) rakh di jaaye to kya hota hai?</div>
+  <div class="a">Shadow itni zyada spread/faded ho jaati hai ke practically wo dikhna hi band ho jaati hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">text-shadow ki 4th value kya hoti hai, aur na diye jaane par kya hota hai?</div>
+  <div class="a">Color — agar color specify na kiya jaaye to default text color ka hi shadow use hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">Ek text-shadow property mein multiple shadows kaise add karte hain?</div>
+  <div class="a">Har shadow ko comma se separate karke — jaise text-shadow: 3px 5px 5px red, -3px -5px 5px blue;</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">Negative offset values (jaise -3px -5px) shadow ko kis taraf push karti hain?</div>
+  <div class="a">Upar (up) aur left ki taraf — positive values ke opposite direction mein.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">box-shadow, text-shadow se syntax ke lihaz se kitna different hai?</div>
+  <div class="a">Bilkul same syntax/process hai (horizontal offset, vertical offset, blur, optional color) — bas box-shadow non-text elements (jaise div) par use hota hai, text-shadow text elements par.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">box-shadow: 3px 3px 5px; lagane se element par kaisa visual effect aata hai?</div>
+  <div class="a">Ek "3D pop" effect — element aisa lagta hai jaise wo screen se thora sa uthta hua (raised) ho.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

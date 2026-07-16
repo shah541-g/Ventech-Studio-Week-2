@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Flexbox — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:900px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .demo-label{ font-size:11px; fill:var(--muted); font-family:sans-serif;}
+  .pill{
+    display:inline-block;
+    background:#1f6feb33;
+    color:#79c0ff;
+    padding:2px 10px;
+    border-radius:20px;
+    font-size:0.8rem;
+    margin:2px 4px 2px 0;
+  }
+  .container-props .pill{background:#3fb95033; color:#7ee787;}
+  .item-props .pill{background:#f7816633; color:#ffa198;}
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🧩 CSS Flexbox — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: Flexbox fundamentals — axes, alignment, wrapping, growth/shrink, order</p>
+
+<h2>0. Container vs Item Properties</h2>
+<div class="card">
+  <p class="container-props"><strong>Container par:</strong>
+    <span class="pill">display: flex</span>
+    <span class="pill">flex-direction</span>
+    <span class="pill">justify-content</span>
+    <span class="pill">align-items</span>
+    <span class="pill">flex-wrap</span>
+    <span class="pill">align-content</span>
+    <span class="pill">gap</span>
+  </p>
+  <p class="item-props"><strong>Direct Children (items) par:</strong>
+    <span class="pill">flex-grow</span>
+    <span class="pill">flex-shrink</span>
+    <span class="pill">flex-basis</span>
+    <span class="pill">flex (shorthand)</span>
+    <span class="pill">align-self</span>
+    <span class="pill">order</span>
+  </p>
+</div>
+
+<h2>1. Do Invisible Axes</h2>
+<div class="card">
+  <p><code>display: flex</code> lagate hi container mein <strong>2 invisible axes</strong> ban jaati hain:</p>
+  <ul>
+    <li><strong>Main axis</strong> — items ismein primarily position hote hain</li>
+    <li><strong>Cross axis</strong> — main axis ke perpendicular</li>
+  </ul>
+  <p>Default: main axis <strong>horizontal</strong> hoti hai (kyunke <code>flex-direction: row</code> default hai).</p>
+  <svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:400px;">
+    <rect x="10" y="10" width="380" height="120" fill="none" stroke="#30363d" stroke-dasharray="4"/>
+    <line x1="20" y1="70" x2="380" y2="70" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="330" y="60" class="demo-label" fill="#58a6ff">main axis →</text>
+    <line x1="60" y1="20" x2="60" y2="120" stroke="#f78166" stroke-width="1.5"/>
+    <text x="70" y="30" class="demo-label" fill="#f78166">cross axis ↓</text>
+    <rect x="100" y="50" width="40" height="40" fill="#3fb95055" stroke="#3fb950"/>
+    <rect x="160" y="50" width="40" height="40" fill="#3fb95055" stroke="#3fb950"/>
+    <rect x="220" y="50" width="40" height="40" fill="#3fb95055" stroke="#3fb950"/>
+  </svg>
+</div>
+
+<h2>2. flex-direction (Main Axis Ka Direction)</h2>
+<div class="card">
+  <table>
+    <tr><th>Value</th><th>Main Axis</th><th>Cross Axis</th></tr>
+    <tr><td><code>row</code> (default)</td><td>Horizontal (left → right)</td><td>Vertical (top → bottom)</td></tr>
+    <tr><td><code>column</code></td><td>Vertical</td><td>Horizontal</td></tr>
+  </table>
+  <div class="warn">
+    ⚠️ Yehi <strong>Flexbox samajhne ki key</strong> hai: <code>justify-content</code> hamesha <strong>main axis</strong> par kaam karta hai — chahe wo horizontal ho ya vertical (flex-direction se decide hota hai).
+  </div>
+</div>
+
+<h2>3. justify-content (Main Axis Alignment)</h2>
+<div class="card">
+  <table>
+    <tr><th>Value</th><th>Kaam</th></tr>
+    <tr><td><code>flex-start</code> (default)</td><td>Items line ke start par</td></tr>
+    <tr><td><code>flex-end</code></td><td>Items line ke end par push</td></tr>
+    <tr><td><code>center</code></td><td>Items beech mein center</td></tr>
+    <tr><td><code>space-between</code></td><td>Pehle aur last item ke darmiyan evenly distribute (edges par space nahi)</td></tr>
+    <tr><td><code>space-around</code></td><td>space-between jaisa, lekin edges par bhi kuch spacing</td></tr>
+    <tr><td><code>space-evenly</code></td><td>Sab items ke darmiyan (aur edges par bhi) bilkul equal spacing</td></tr>
+  </table>
+</div>
+
+<h2>4. align-items (Cross Axis Alignment)</h2>
+<div class="card">
+  <table>
+    <tr><th>Value</th><th>Kaam</th></tr>
+    <tr><td><code>flex-start</code></td><td>Items cross axis ke start par</td></tr>
+    <tr><td><code>flex-end</code></td><td>Items cross axis ke end par</td></tr>
+    <tr><td><code>center</code></td><td>Items cross axis ke beech mein</td></tr>
+    <tr><td><code>baseline</code></td><td>Items is tarah align hote hain ke sab ke text ki baseline (chahe font-size different ho) ek line mein aa jaaye</td></tr>
+  </table>
+  <div class="warn">
+    ⚠️ Yaad rakho: <strong>justify-content = main axis</strong>, <strong>align-items = cross axis</strong>. Ye distinction hi Flexbox samajhne ka core hai.
+  </div>
+</div>
+
+<h2>5. flex-wrap</h2>
+<div class="card">
+  <p>Default: <code>nowrap</code> — items zabardasti ek hi line mein fit hone ki koshish karte hain, jagah kam pade to items <strong>crush (squeeze)</strong> hone lagte hain.</p>
+  <pre>.container {
+  flex-wrap: wrap;
+}</pre>
+  <p>Isse items ab ek line mein fit hone ki zid nahi karte — jab space khatam ho jaaye to <strong>naye line mein wrap</strong> ho jaate hain.</p>
+</div>
+
+<h2>6. align-content (Sirf Wrap Ke Sath)</h2>
+<div class="card">
+  <p><code>align-content</code> tabhi kaam karta hai jab <code>flex-wrap: wrap</code> ho <strong>aur</strong> items multiple lines mein wrap ho rahe hon. Ye <strong>cross axis par saare lines ko together</strong> align karta hai (align-items se confuse na karo, wo ek line ke andar items align karta hai).</p>
+  <p>Possible values <code>justify-content</code> jaisi hi: <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code>, <code>space-evenly</code>.</p>
+</div>
+
+<h2>7. gap</h2>
+<div class="card">
+  <p>Items ke darmiyan direct spacing dene ke liye — container par lagayi jaati hai:</p>
+  <pre>.container {
+  gap: 1rem;
+}</pre>
+</div>
+
+<h2>8. flex-grow (Item Property)</h2>
+<div class="card">
+  <p><strong>Unitless value</strong> jo proportion ki tarah kaam karti hai — agar container mein extra space bachi ho, to ye define karta hai <strong>item kitna grow kare</strong>.</p>
+  <pre>.item-3 { flex-grow: 1; }</pre>
+  <ul>
+    <li>Agar sirf ek item par <code>flex-grow: 1</code> ho, to <strong>saari remaining space wahi item</strong> le lega</li>
+    <li>Agar sab items par <code>flex-grow: 1</code> ho, to remaining space <strong>sab mein equally</strong> distribute hogi</li>
+  </ul>
+</div>
+
+<h2>9. flex-shrink (Item Property)</h2>
+<div class="card">
+  <p>Unitless value — define karta hai item <strong>kitni tezi se shrink</strong> ho jab space kam pade (baaki items ke comparison mein).</p>
+  <pre>.item-1 { flex-shrink: 5; }  /* baaki se zyada tezi se shrink hoga */
+.item-1 { flex-shrink: 0; }  /* bilkul shrink nahi hoga */</pre>
+</div>
+
+<h2>10. flex-basis (Item Property)</h2>
+<div class="card">
+  <p>Item ka <strong>size define karta hai</strong> before remaining space distribute ho — agar item par pehle se width set hai, to <code>flex-basis</code> usko <strong>overwrite</strong> kar deta hai.</p>
+  <pre>.item {
+  width: 150px;
+  flex-basis: 300px; /* ab actual size 300px ho jaayega */
+}</pre>
+  <p><code>flex-basis: 0</code> item ko max tak shrink kar deta hai (starting point 0 maan liya jaata hai).</p>
+</div>
+
+<h2>11. flex (Shorthand)</h2>
+<div class="card">
+  <p><code>flex</code> = <code>flex-grow</code> + <code>flex-shrink</code> + <code>flex-basis</code> ka combined shorthand. Doosri aur teesri value <strong>optional</strong> hain.</p>
+  <pre>.item { flex: 1; } /* baaki 2 values automatically/intelligently set ho jaati hain */</pre>
+  <p style="color:var(--muted); font-size:0.9rem;">Practically individual grow/shrink/basis se zyada ye shorthand hi use hota hai.</p>
+</div>
+
+<h2>12. align-self (Item Property)</h2>
+<div class="card">
+  <p>Container ke <code>align-items</code> ko <strong>ek specific individual item</strong> ke liye override karta hai.</p>
+  <pre>.container { align-items: flex-start; }
+.item-1 { align-self: center; } /* sirf ye item center hoga */</pre>
+  <p>Possible values: <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <code>baseline</code>.</p>
+</div>
+
+<h2>13. order (Item Property)</h2>
+<div class="card">
+  <p>Default: har item ka <code>order: 0</code> hota hai, isliye wo HTML order mein hi appear karte hain. Isko change karke visual order badla ja sakta hai (HTML change kiye bagair).</p>
+  <pre>.item-3 { order: -1; } /* teesra item ab sab se pehle dikhega */
+.item-1 { order: 1; }  /* pehla item ab sab se aakhir mein dikhega */</pre>
+  <div class="warn">
+    ⚠️ Best practice: <code>order</code> ka use avoid karo jab tak zaroori na ho — ye HTML ki <strong>semantics aur accessibility</strong> ko disturb karta hai (screen readers HTML order follow karte hain, visual order nahi).
+  </div>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">display: flex lagane se container mein kya create hota hai?</div>
+  <div class="a">Do invisible axes — main axis aur cross axis. Items in axes ke around position hote hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">Default main axis kis direction mein hoti hai aur kyun?</div>
+  <div class="a">Horizontal — kyunke flex-direction ki default value row hoti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">flex-direction: column set karne se main axis kya ban jaati hai?</div>
+  <div class="a">Vertical — aur cross axis horizontal ban jaati hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">justify-content kis axis par kaam karta hai?</div>
+  <div class="a">Main axis par (chahe wo row ho ya column, flex-direction jo bhi ho).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">align-items kis axis par kaam karta hai?</div>
+  <div class="a">Cross axis par (main axis ke perpendicular).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">space-between aur space-around mein kya farq hai?</div>
+  <div class="a">space-between: pehle aur last item ke darmiyan evenly space distribute hoti hai, edges par koi extra space nahi. space-around: waise hi lekin edges par bhi thori spacing hoti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">align-items: baseline kya karta hai?</div>
+  <div class="a">Items ko is tarah align karta hai ke unke text ki baseline ek line mein aa jaaye, chahe alag-alag items ka font-size different kyun na ho.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">Default flex-wrap value kya hoti hai, aur uska result kya hota hai jab items ke liye jagah kam pad jaaye?</div>
+  <div class="a">nowrap — items ek hi line mein fit hone ki koshish karte hain, aur agar jagah kam ho to wo aapas mein crush (squeeze) hone lagte hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">align-content property kab activate/use hoti hai?</div>
+  <div class="a">Sirf tab jab flex-wrap: wrap set ho aur items actually multiple lines mein wrap ho rahe hon — ye saari lines ko cross axis par together align karta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">align-content aur align-items mein farq kya hai?</div>
+  <div class="a">align-items ek hi line ke andar items ko cross axis par align karta hai. align-content poori (wrapped) lines ko cross axis par ek group ki tarah align karta hai — sirf wrap hone par kaam karta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">flex-grow: 1 sirf ek item par lagane se kya hota hai (agar container mein extra space ho)?</div>
+  <div class="a">Wo item saari remaining/extra space le leta hai aur grow ho jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12">Agar sab items par flex-grow: 1 set ho, to remaining space kaise distribute hoti hai?</div>
+  <div class="a">Sab items mein equally (proportionally) distribute hoti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="13">flex-shrink: 0 lagane se item ka behavior kya hoga?</div>
+  <div class="a">Wo item bilkul shrink nahi hoga, chahe container mein jagah kam ho jaaye.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="14">flex-basis kya define karta hai aur ye existing width property ko kaise affect karta hai?</div>
+  <div class="a">Item ka size (remaining space distribute hone se pehle) define karta hai — agar item par pehle se width set hai, to flex-basis usko overwrite kar deta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="15">flex shorthand mein kaunsi 3 properties combine hoti hain?</div>
+  <div class="a">flex-grow, flex-shrink, aur flex-basis — jismein dusri aur teesri value optional hoti hain aur automatically set ho jaati hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="16">align-self kis property ko override karta hai, aur kis level par?</div>
+  <div class="a">Container ke align-items ko override karta hai, lekin sirf ek individual item ke level par — baaki items par container ka align-items normal tarah apply hota rehta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="17">order property ki default value kya hoti hai, aur is se kya implication hoti hai?</div>
+  <div class="a">Default order: 0 hota hai sab items ka — isliye wo HTML mein jis order mein likhe hon, usi order mein visually appear karte hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="18">order property ka use kyun avoid karna chahiye jab tak zaroori na ho?</div>
+  <div class="a">Kyunke ye HTML document ki semantics aur accessibility ko disturb karta hai — screen readers aur assistive tech HTML ka actual order follow karte hain, visual (CSS) order nahi.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Overflow & Scrollbar Styling — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+
+  /* demo scrollbar */
+  .demo-box{
+    height:80px;
+    overflow-y:scroll;
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px;
+    font-size:0.85rem;
+    color:var(--muted);
+  }
+  .demo-box::-webkit-scrollbar{ width:10px; }
+  .demo-box::-webkit-scrollbar-track{ background:#30363d; border-radius:10px; }
+  .demo-box::-webkit-scrollbar-thumb{ background:var(--purple); border-radius:10px; }
+  .demo-box::-webkit-scrollbar-thumb:hover{ background:#e0aaff; }
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🖱️ CSS Overflow & Scrollbar Styling — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: overflow (auto/hidden/scroll), overflow-x/y, aur ::-webkit-scrollbar styling</p>
+
+<h2>1. Problem: Content Container Se Bada</h2>
+<div class="card">
+  <p>Jab kisi element ka content uske box se <strong>bada</strong> ho, to wo overflow ho jaata hai. Isko control karne ke liye <code>overflow</code> property use hoti hai.</p>
+</div>
+
+<h2>2. overflow: auto</h2>
+<div class="card">
+  <pre>.box {
+  overflow: auto;
+}</pre>
+  <p>Agar content out-of-bounds ho, to <strong>scrollbars display</strong> ho jaate hain (sirf jitni zaroorat ho, horizontal ya vertical ya dono).</p>
+</div>
+
+<h2>3. overflow: hidden</h2>
+<div class="card">
+  <pre>.box {
+  overflow: hidden;
+}</pre>
+  <p>Overflowing content <strong>cut off</strong> ho jaata hai — bilkul dikhta hi nahi, koi scrollbar bhi nahi milti.</p>
+</div>
+
+<h2>4. overflow: scroll</h2>
+<div class="card">
+  <pre>.box {
+  overflow: scroll;
+}</pre>
+  <p>Scrollbars <strong>hamesha visible</strong> rehti hain — chahe content container mein fit hi kyun na ho jaaye.</p>
+</div>
+
+<h2>5. overflow-x / overflow-y — Sirf Ek Direction Control Karna</h2>
+<div class="card">
+  <p>Agar sirf ek specific axis (horizontal ya vertical) ka overflow control karna ho, to <code>overflow-x</code> aur <code>overflow-y</code> use hote hain:</p>
+  <pre>.box {
+  overflow-x: hidden; /* horizontal scrollbar gayab */
+  overflow-y: hidden; /* vertical scrollbar gayab */
+}</pre>
+  <div class="warn">
+    ⚠️ Example: agar image ki width container se zyada ho (jaise 600px), to horizontal scrollbar aa jaata hai. <code>overflow-x: hidden</code> se sirf wo horizontal scrollbar hata sakte hain, vertical scroll par asar nahi padega.
+  </div>
+</div>
+
+<h2>6. Scrollbar Styling — ::-webkit-scrollbar</h2>
+<div class="card">
+  <p>WebKit-based browsers (Chrome, Safari, Edge) mein scrollbar ko custom style karne ke liye special selectors use hote hain:</p>
+  <pre>.box::-webkit-scrollbar {
+  width: 10px;
+}
+
+.box::-webkit-scrollbar-track {
+  background: gray;
+}
+
+.box::-webkit-scrollbar-thumb {
+  background: purple;
+}
+
+.box::-webkit-scrollbar-thumb:hover {
+  background: purple;
+}</pre>
+  <table>
+    <tr><th>Selector</th><th>Kya Style Karta Hai</th></tr>
+    <tr><td><code>::-webkit-scrollbar</code></td><td>Poori scrollbar ki size (jaise width)</td></tr>
+    <tr><td><code>::-webkit-scrollbar-track</code></td><td>Scrollbar ka background "track" (channel jismein thumb move karta hai)</td></tr>
+    <tr><td><code>::-webkit-scrollbar-thumb</code></td><td>Actual draggable "thumb" jo scroll amount show karta hai</td></tr>
+    <tr><td><code>::-webkit-scrollbar-thumb:hover</code></td><td>Thumb ka style jab mouse usse hover kare</td></tr>
+  </table>
+  <p>Live example (isi page ka scrollbar demo — mouse hover karke dekho):</p>
+  <div class="demo-box">
+    Ye ek scrollable box hai jisme kaafi text hai taake scrollbar dikh sake. Purple thumb par mouse le jaakar hover effect dekho. Scroll karke poora text padho. Ye custom styled webkit scrollbar ka live example hai.
+  </div>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">overflow: auto ka behavior kya hai?</div>
+  <div class="a">Content agar container se bada/out-of-bounds ho, to sirf tab scrollbars display hote hain — na hone par scrollbar nahi dikhta.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">overflow: hidden set karne se overflowing content ka kya hota hai?</div>
+  <div class="a">Content cut off ho jaata hai — bilkul nazar nahi aata, aur koi scrollbar bhi provide nahi hota use dekhne ke liye.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">overflow: scroll aur overflow: auto mein kya farq hai?</div>
+  <div class="a">overflow: scroll mein scrollbars hamesha visible rehte hain, chahe content fit ho ya na ho. overflow: auto mein scrollbars sirf tab dikhte hain jab actually zaroorat ho.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">Agar sirf horizontal overflow control karna ho (vertical ko touch kiye bagair), to kaunsi property use hogi?</div>
+  <div class="a">overflow-x</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">Agar image container se zyada wide ho aur horizontal scrollbar hatana ho, to kya karenge?</div>
+  <div class="a">overflow-x: hidden; set karenge — isse sirf horizontal scrollbar gayab hoga, vertical scroll par koi asar nahi padega.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">::-webkit-scrollbar selector kya control karta hai?</div>
+  <div class="a">Poori scrollbar ki general styling, jaise uski width (thickness).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">::-webkit-scrollbar-track aur ::-webkit-scrollbar-thumb mein kya farq hai?</div>
+  <div class="a">-track scrollbar ke background channel/path ko style karta hai jismein thumb move karta hai. -thumb wo actual draggable part hota hai jo scroll position show karta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">Thumb ka color mouse hover par change karne ke liye kaunsa selector use hoga?</div>
+  <div class="a">::-webkit-scrollbar-thumb:hover</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

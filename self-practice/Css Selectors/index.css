@@ -16,6 +16,8 @@
 /* Type Selector */
 body{
   background: #F8FAFC;
+  webkit-font-smoothing:	antialiased;
+  -moz-osx-font-smoothing:	grayscale;
 }
 header, footer{
   height: 20vh;

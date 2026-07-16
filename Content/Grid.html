@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Grid — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:900px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .demo-label{ font-size:11px; fill:var(--muted); font-family:sans-serif;}
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+  .section-nav{
+    display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 30px;
+  }
+  .section-nav a{
+    font-size:0.78rem;
+    color:var(--accent);
+    background:#1f6feb1a;
+    padding:4px 10px;
+    border-radius:14px;
+    text-decoration:none;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔲 CSS Grid — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: Grid basics, positioning, implicit grid, fr unit, template areas, alignment, responsive trick</p>
+
+<h2>1. Grid Ki Basic Terminology</h2>
+<div class="card">
+  <p>Grid <strong>two-dimensional</strong> hai — items horizontally, vertically, ya dono ek sath position ho sakte hain, yahan tak ke <strong>stacked (layered)</strong> bhi.</p>
+  <ul>
+    <li><strong>Lines</strong> — har number ek line represent karta hai. <strong>Row lines</strong> (horizontal) aur <strong>column lines</strong> (vertical)</li>
+    <li><strong>Cell</strong> — grid ka har chhota square</li>
+    <li><strong>Track</strong> — rows aur columns (poori row ya poori column ek "track" hai)</li>
+  </ul>
+  <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:280px;">
+    <g stroke="#30363d" stroke-width="1">
+      <line x1="20" y1="20" x2="20" y2="200"/>
+      <line x1="90" y1="20" x2="90" y2="200"/>
+      <line x1="160" y1="20" x2="160" y2="200"/>
+      <line x1="230" y1="20" x2="230" y2="200"/>
+      <line x1="20" y1="20" x2="230" y2="20"/>
+      <line x1="20" y1="80" x2="230" y2="80"/>
+      <line x1="20" y1="140" x2="230" y2="140"/>
+      <line x1="20" y1="200" x2="230" y2="200"/>
+    </g>
+    <text x="12" y="15" class="demo-label" fill="#58a6ff">1</text>
+    <text x="82" y="15" class="demo-label" fill="#58a6ff">2</text>
+    <text x="152" y="15" class="demo-label" fill="#58a6ff">3</text>
+    <text x="222" y="15" class="demo-label" fill="#58a6ff">4</text>
+    <text x="6" y="24" class="demo-label" fill="#f78166">1</text>
+    <text x="6" y="84" class="demo-label" fill="#f78166">2</text>
+    <text x="6" y="144" class="demo-label" fill="#f78166">3</text>
+    <rect x="20" y="20" width="70" height="60" fill="#3fb95022"/>
+  </svg>
+</div>
+
+<h2>2. Grid Banana</h2>
+<div class="card">
+  <pre>.container {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px;
+}</pre>
+  <p><code>grid-template-columns</code> / <code>grid-template-rows</code> — <strong>har value ek track</strong> define karti hai. 3 values dene se 3 columns ban jaate hain.</p>
+  <div class="warn">
+    ⚠️ Sirf <code>display: grid</code> lagane se kuch visible change nahi hota — rows/columns explicitly define karne padte hain.
+  </div>
+</div>
+
+<h2>3. Item Position Karna — Line-based</h2>
+<div class="card">
+  <pre>.item-1 {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 5;
+}</pre>
+  <p>Line numbers use hoti hain — item line 1 se shuru hokar line 3 tak rows mein, aur line 1 se line 5 tak columns mein span karega.</p>
+  <div class="warn">
+    ⚠️ Agar baaki items ki position explicitly define na ki jaaye, to wo automatically push ho jaate hain.
+  </div>
+</div>
+
+<h2>4. Shorthand: grid-row / grid-column</h2>
+<div class="card">
+  <pre>.item-2 {
+  grid-row: 1 / 3;
+  grid-column: 5 / 7;
+}</pre>
+  <p>Format: <code>start-line / end-line</code>. 4 alag properties likhne se behtar shorthand hai.</p>
+</div>
+
+<h2>5. span Keyword</h2>
+<div class="card">
+  <pre>.item-2 {
+  grid-row: span 2;
+  grid-column: span 2;
+}</pre>
+  <p><code>span</code> ka matlab: "jahan bhi ho, wahan se itni cells span kar jao" — explicit line numbers ki zaroorat nahi, easy to read.</p>
+  <div class="warn">
+    ⚠️ Downside: <code>span</code> explicit start/end position define nahi karta — agar koi nearby item ka size change ho jaaye, to ye item bhi push ho sakta hai (position "anchored" nahi hoti).
+  </div>
+</div>
+
+<h2>6. grid-area (4-value Shorthand)</h2>
+<div class="card">
+  <p>Sab se fast property — <strong>4 values ek sath</strong> (row-start, column-start, row-end, column-end):</p>
+  <pre>.item-3 {
+  grid-area: 3 / 1 / 7 / 7;
+}</pre>
+  <p>Isse <strong>6 properties ka kaam ek line mein</strong> ho jaata hai.</p>
+  <p>Negative line numbers bhi use ho sakti hain — <code>-1</code> grid ki <strong>aakhri line</strong> ko represent karta hai:</p>
+  <pre>.item-3 {
+  grid-area: 3 / 1 / -1 / -1; /* end tak span */
+}</pre>
+</div>
+
+<h2>7. Layering (Stacking Items)</h2>
+<div class="card">
+  <p>Grid se pehle layering ke liye <code>position: absolute</code> + top/right/bottom/left ka jhanjhat karna padta tha. Grid mein bas item ko us position par rakh do, agar wo kisi doosre item se overlap kare to <strong>automatically layering</strong> ban jaati hai.</p>
+  <p>Layer order control karne ke liye normal <code>z-index</code> use hota hai:</p>
+  <pre>.item-2 { z-index: 1; }</pre>
+</div>
+
+<h2>8. Implicit Grid</h2>
+<div class="card">
+  <p>Agar explicitly defined grid mein jagah khatam ho jaaye aur naya item add ho, to grid <strong>automatically ek naya row/column bana leta hai</strong> — isse <strong>implicit grid</strong> kehte hain.</p>
+  <div class="warn">
+    ⚠️ Implicit grid ki rows/columns <code>grid-template-rows</code>/<code>grid-template-columns</code> ki values ko <strong>inherit nahi karti</strong> — isliye naya item size mein alag/chhota dikhta hai.
+  </div>
+  <pre>.container {
+  grid-auto-rows: 100px;       /* implicit rows ka size */
+  grid-auto-flow: column;       /* default naya row ki jagah column banega */
+  grid-auto-columns: 100px;    /* implicit columns ka size */
+}</pre>
+</div>
+
+<h2>9. Units: fr, minmax, repeat</h2>
+<div class="card">
+  <h3>fr (Fractional Unit)</h3>
+  <pre>grid-template-columns: 1fr 1fr 1fr;</pre>
+  <p>Available space ka <strong>proportional (fractional) hissa</strong> represent karta hai. Sab 1fr ho to teeno columns equal space lenge. Value badhane se (jaise 2fr) wo column zyada space le lega.</p>
+  <p>fr ko doosre units (px, %, rem) ke saath mix bhi kar sakte hain: <code>100px 1fr 1fr</code>.</p>
+
+  <h3 style="margin-top:14px;">minmax()</h3>
+  <pre>grid-template-columns: 1fr minmax(100px, 3fr) 1fr;</pre>
+  <p>Ek track ke liye <strong>minimum aur maximum size</strong> define karta hai — item us range ke andar hi resize hoga, us se chhota nahi hoga.</p>
+
+  <h3 style="margin-top:14px;">repeat()</h3>
+  <pre>grid-template-rows: repeat(2, 100px);</pre>
+  <p>Pehla argument = <strong>kitni baar repeat</strong> karna hai, dusra argument = <strong>kya value repeat</strong> karni hai. Repetition avoid karta hai.</p>
+</div>
+
+<h2>10. gap</h2>
+<div class="card">
+  <pre>.container {
+  gap: 20px 10px; /* pehli value = row gap, dusri = column gap */
+}</pre>
+  <p>Ek value dene se rows aur columns dono par equally apply hoti hai.</p>
+</div>
+
+<h2>11. grid-template-areas</h2>
+<div class="card">
+  <p>Line numbers track kiye bagair items position karne ka tareeka — <strong>named sections</strong> use karta hai.</p>
+  <pre>.container {
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'header header'
+    'main aside'
+    'footer footer';
+}
+
+.item-1 { grid-area: header; }
+.item-2 { grid-area: main; }
+.item-3 { grid-area: aside; }
+.item-4 { grid-area: footer; }</pre>
+  <ul>
+    <li>Har set of quotes (<code>'...'</code>) ek <strong>row</strong> represent karta hai</li>
+    <li>Har quote ke andar values ki tadaad <strong>columns ki tadaad</strong> ke barabar honi chahiye</li>
+    <li>Items ko sirf naam se assign karo: <code>grid-area: header;</code></li>
+  </ul>
+  <div class="warn">
+    ⚠️ Ye tareeka simple aur readable hai, lekin isme <strong>layering (items ko overlap)</strong> karna line-numbers wale tareeke se zyada mushkil hai.
+  </div>
+</div>
+
+<h2>12. justify-items / align-items (Container)</h2>
+<div class="card">
+  <p>Default value: <code>stretch</code> (isliye items apni cell ko poora fill karte hain).</p>
+  <ul>
+    <li><code>justify-items</code> — <strong>row axis</strong> (horizontal) par items align karta hai</li>
+    <li><code>align-items</code> — <strong>column axis</strong> (vertical) par items align karta hai</li>
+  </ul>
+  <p>Values: <code>stretch</code> (default), <code>start</code>, <code>end</code>, <code>center</code>, <code>baseline</code>.</p>
+</div>
+
+<h2>13. justify-self / align-self (Item)</h2>
+<div class="card">
+  <p>Individual item ke liye container ke <code>justify-items</code>/<code>align-items</code> ko override karta hai:</p>
+  <pre>.item-1 {
+  justify-self: center;
+  align-self: stretch;
+}</pre>
+</div>
+
+<h2>14. justify-content / align-content (Poori Grid)</h2>
+<div class="card">
+  <p>Ye <strong>poore grid ko container ke andar</strong> align karte hain (jab grid container se chhota ho) — <code>justify-items</code>/<code>align-items</code> se confuse na karo, wo individual items ko cell ke andar align karte hain.</p>
+  <ul>
+    <li><code>justify-content</code> — grid ko <strong>row axis</strong> par align</li>
+    <li><code>align-content</code> — grid ko <strong>column axis</strong> par align</li>
+  </ul>
+  <p>Values: <code>start</code>, <code>center</code>, <code>baseline</code>, <code>space-between</code>, <code>space-around</code>, <code>space-evenly</code>.</p>
+</div>
+
+<h2>15. Responsive Grid — Zero Media Queries!</h2>
+<div class="card">
+  <pre>.container {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}</pre>
+  <p><code>repeat(4, ...)</code> ki jagah <code>auto-fit</code> keyword use karo. Jab items apni minimum size (<code>minmax</code> se defined) tak pohanch jaayein, to <code>auto-fit</code> automatically unhe <strong>agli row mein wrap</strong> kar deta hai — bina kisi media query ke, purely responsive layout.</p>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">CSS Grid two-dimensional hone ka kya matlab hai?</div>
+  <div class="a">Items horizontally, vertically, aur dono directions mein simultaneously position kiye ja sakte hain — yahan tak ke items stack (layer) bhi kiye ja sakte hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">Grid ki 3 basic terminology kya hain?</div>
+  <div class="a">Lines (row lines aur column lines), Cells (har chhota square), aur Tracks (poori row ya poori column).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">grid-template-columns mein har value kya represent karti hai?</div>
+  <div class="a">Ek track (yani ek column) — jitni values dogay, utne columns ban jaayenge us size ke.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">grid-row aur grid-column shorthand ka format kya hai?</div>
+  <div class="a">start-line / end-line — dono values ek slash se separate hoti hain, jaise grid-row: 1 / 3;</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">span keyword ka main downside kya hai?</div>
+  <div class="a">Ye explicit start aur end position define nahi karta, sirf "yahan se itni cells span karo" batata hai — isliye agar nearby item ka size change ho, to ye item bhi push ho sakta hai (position anchored nahi hoti).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">grid-area shorthand mein 4 values kis order mein hoti hain?</div>
+  <div class="a">row-start / column-start / row-end / column-end.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">Grid mein negative line number (jaise -1) kya represent karta hai?</div>
+  <div class="a">Grid ki aakhri line — isse aap explicit last number pata kiye bagair grid ke end tak span kar sakte ho.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">CSS Grid mein items ko layer (stack) karna position: absolute ke comparison mein kyun aasan hai?</div>
+  <div class="a">Bas item ko us position par rakh do jahan wo doosre item ke sath overlap ho jaaye — automatically layering create ho jaati hai, top/right/bottom/left manually calculate nahi karne padte. Layer order ke liye normal z-index use hoti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">Implicit grid kab create hoti hai?</div>
+  <div class="a">Jab explicitly defined grid mein saari jagah occupy ho chuki ho aur ek naya item add kiya jaaye — grid automatically ek naya row (ya column) bana deta hai us item ko accommodate karne ke liye.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">Implicit grid mein naya item chhota kyun dikhta hai?</div>
+  <div class="a">Kyunke implicit grid ke rows/columns, grid-template-rows aur grid-template-columns ki defined values ko inherit nahi karte — jab tak grid-auto-rows/grid-auto-columns explicitly na diya jaaye.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">grid-auto-flow: column set karne se kya change hota hai?</div>
+  <div class="a">Default behavior (naya implicit row banana) ki jagah, ab naya implicit content column ki tarah add hoga.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12">fr unit kya represent karta hai?</div>
+  <div class="a">Available space ka ek fractional (proportional) hissa — jaise 1fr 1fr 1fr se teeno tracks available space ko barabar baant lete hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="13">minmax(100px, 3fr) kya karta hai?</div>
+  <div class="a">Us track ke liye minimum size 100px aur maximum size 3fr set karta hai — track us range se chhota nahi ho sakta.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="14">repeat(2, 100px) ka matlab kya hai?</div>
+  <div class="a">100px value ko 2 baar repeat karo — yani do tracks banao, dono 100px ki. Pehla argument repetition count hai, dusra argument repeat hone wali value hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="15">gap: 20px 10px; mein kaunsi value row gap hai aur kaunsi column gap?</div>
+  <div class="a">Pehli value (20px) row gap hai, dusri value (10px) column gap hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="16">grid-template-areas mein har set of quotes kya represent karta hai, aur andar ki values kya represent karti hain?</div>
+  <div class="a">Har set of quotes (' ') ek row represent karta hai. Uske andar likhi har value ek column ko us named section se assign karti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="17">grid-template-areas approach ka main downside kya hai?</div>
+  <div class="a">Isse items ko layer (overlap) karna, line-number based approach ke comparison mein zyada mushkil hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="18">justify-items aur align-items (container par) mein kya farq hai?</div>
+  <div class="a">justify-items row axis (horizontal) par items align karta hai apni cell ke andar. align-items column axis (vertical) par align karta hai. Dono ki default value stretch hoti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="19">justify-self / align-self kis cheez ko override karte hain?</div>
+  <div class="a">Container ke justify-items / align-items ko — lekin sirf ek individual item ke liye, baaki items par container ki default value hi apply hoti rehti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="20">justify-content / align-content, justify-items / align-items se kaise different hain?</div>
+  <div class="a">justify-content/align-content poore grid ko container ke andar align karte hain (jab grid container se chhota ho). justify-items/align-items individual items ko unki apni cell ke andar align karte hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="21">Bina media query ke responsive grid banane ka tareeka kya hai?</div>
+  <div class="a">grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); — repeat count ki jagah auto-fit keyword use karo, isse items apni minimum size tak pohanchte hi automatically agli row mein wrap ho jaate hain.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

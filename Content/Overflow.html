@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Overflow — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>📦 CSS <code>overflow</code> Property — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: visible, hidden, clip, scroll, auto</p>
+
+<h2>1. Overflow Kya Hai?</h2>
+<div class="card">
+  <p><code>overflow</code> property define karti hai ke jab kisi element ka content uske <strong>parent box mein fit nahi hota</strong> (yani overflow hota hai), to browser kya behavior dikhaye.</p>
+  <pre>div {
+  border: 2px solid;
+  height: 75px; /* content is se zyada ho jaaye to overflow */
+}</pre>
+  <p>5 possible states hain: <code>visible</code>, <code>hidden</code>, <code>clip</code>, <code>scroll</code>, <code>auto</code>.</p>
+</div>
+
+<h2>2. overflow: visible (Default)</h2>
+<div class="card">
+  <p>Default value. Agar content overflow ho raha ho, to usko <strong>bahar dikhne diya</strong> jaata hai — box ke border se bahar visible rehta hai, koi apparent restriction nahi.</p>
+</div>
+
+<h2>3. overflow: hidden</h2>
+<div class="card">
+  <p>Overflow hone wala content <strong>chhupa (hidden)</strong> diya jaata hai — screen par nazar nahi aata.</p>
+  <div class="warn">
+    ⚠️ Important: content hidden hone ka matlab ye nahi ke wo <strong>gayab</strong> ho gaya — wo <strong>DOM mein maujood aur interactable</strong> hai. Jaise agar aap select-all + copy karo, to poora text (including hidden part) copy ho jaayega.
+  </div>
+</div>
+
+<h2>4. overflow: clip</h2>
+<div class="card">
+  <p><code>hidden</code> jaisa hi visually — content overflow hoke chhup jaata hai. Farq ye hai ke <code>clip</code> ka use <strong><code>overflow-clip-margin</code></strong> property ke sath tandem mein hota hai.</p>
+  <pre>div {
+  overflow: clip;
+  overflow-clip-margin: 13px;
+}</pre>
+  <p><code>overflow-clip-margin</code> se define hota hai ke content <strong>box se kitna bahar tak</strong> dikh sakta hai before wo cut ho jaaye — is example mein 13px tak overflow allowed hai, baaki hidden.</p>
+</div>
+
+<h2>5. overflow: scroll</h2>
+<div class="card">
+  <p>Box par <strong>hamesha scrollbar</strong> (vertical aur horizontal, dono) dikhti hai, chahe content overflow ho ya na ho.</p>
+  <div class="warn">
+    ⚠️ Agar content itna kam ho ke overflow ho hi na, to scrollbar phir bhi dikhti hai — bas wo <strong>disabled (non-functional)</strong> state mein rehti hai.
+  </div>
+</div>
+
+<h2>6. overflow: auto</h2>
+<div class="card">
+  <p><code>scroll</code> jaisa hi, lekin <strong>smart</strong> — scrollbar sirf tab dikhti hai jab actually zaroorat ho (content overflow ho raha ho). Agar overflow na ho, to scrollbar bilkul <strong>nahi dikhti</strong>.</p>
+</div>
+
+<h2>Quick Comparison Table</h2>
+<div class="card">
+  <table>
+    <tr><th>Value</th><th>Overflow Content</th><th>Scrollbar</th></tr>
+    <tr><td><code>visible</code> (default)</td><td>Box se bahar dikhta hai</td><td>❌</td></tr>
+    <tr><td><code>hidden</code></td><td>Chhupa diya jaata hai (DOM mein maujood)</td><td>❌</td></tr>
+    <tr><td><code>clip</code></td><td>Chhupa diya jaata hai, margin control ke sath</td><td>❌</td></tr>
+    <tr><td><code>scroll</code></td><td>Scroll karke dekha ja sakta hai</td><td>✅ (hamesha, chahe zaroorat ho ya na ho)</td></tr>
+    <tr><td><code>auto</code></td><td>Scroll karke dekha ja sakta hai</td><td>✅ (sirf jab zaroorat ho)</td></tr>
+  </table>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">overflow property kis situation ko handle karti hai?</div>
+  <div class="a">Jab kisi element ka content uske parent box mein fit nahi hota (overflow hota hai), to overflow property define karti hai ke us extra content ka kya kiya jaaye.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">overflow ki 5 possible values kya hain?</div>
+  <div class="a">visible, hidden, clip, scroll, auto.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">Default overflow value kya hai, aur uska behavior kya hota hai?</div>
+  <div class="a">visible — overflow hone wale content ko box ke bahar dikhne diya jaata hai, koi restriction nahi hoti.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">overflow: hidden se content screen par dikhna band ho jaata hai, lekin kya wo poori tarah gayab ho jaata hai?</div>
+  <div class="a">Nahi — content DOM mein maujood rehta hai aur interactable hota hai. Jaise select-all + copy karne par poora text (hidden part sahit) copy ho jaayega.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">overflow: clip, overflow: hidden se kis property ke sath use hone ki wajah se different hai?</div>
+  <div class="a">overflow-clip-margin property ke sath — is se define hota hai content box se kitna bahar tak (kitne pixels) overflow ho sakta hai before wo cut ho jaaye.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">overflow-clip-margin: 13px; ka kya matlab hai?</div>
+  <div class="a">Content box se 13px tak overflow hoke dikh sakta hai, us se aage jo content hoga wo hidden (cut) ho jaayega.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">overflow: scroll set karne par agar content overflow hi na ho raha ho, to scrollbar ka kya hota hai?</div>
+  <div class="a">Scrollbar phir bhi dikhti hai, lekin disabled (non-functional) state mein rehti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">overflow: auto, overflow: scroll se kaise different hai?</div>
+  <div class="a">auto "smart" hai — scrollbar sirf tab dikhti hai jab content actually overflow ho raha ho. scroll mein scrollbar hamesha dikhti hai, chahe zaroorat ho ya na ho.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">Agar aapko sirf zaroorat padne par hi scrollbar chahiye (na ki hamesha), to kaunsi value use karni chahiye?</div>
+  <div class="a">overflow: auto;</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

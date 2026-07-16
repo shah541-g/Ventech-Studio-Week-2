@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS display: contents — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .demo-label{ font-size:11px; fill:var(--muted); font-family:sans-serif;}
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>👻 CSS <code>display: contents</code> — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: display: contents ka use-case, flexbox ke sath kaam, aur flex-grow example</p>
+
+<h2>1. Problem Kya Hai?</h2>
+<div class="card">
+  <p>Ek <code>nav</code> hai jismein 3 direct items hain, aur ek <code>div.actions</code> hai jiske andar bhi 3 items hain (total 2 groups):</p>
+  <pre>&lt;nav&gt;
+  &lt;a&gt;Item 1&lt;/a&gt;
+  &lt;a&gt;Item 2&lt;/a&gt;
+  &lt;a&gt;Item 3&lt;/a&gt;
+  &lt;div class="actions"&gt;
+    &lt;button&gt;A&lt;/button&gt;
+    &lt;button&gt;B&lt;/button&gt;
+    &lt;button&gt;C&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</pre>
+  <p><code>nav</code> par <code>display: flex; gap: ...</code> lagane se:</p>
+  <ul>
+    <li>Pehle 3 items (direct children) — <strong>flex properly work karta hai</strong>, gap apply hota hai</li>
+    <li><code>div.actions</code> ke andar wale 3 items — flex children <strong>nahi</strong> maane jaate, isliye layout "funky" (ajeeb) lagta hai</li>
+  </ul>
+  <div class="warn">
+    ⚠️ Wajah: flexbox sirf apne <strong>direct children</strong> par apply hota hai. <code>div.actions</code> khud ek direct child hai, lekin uske andar wale buttons nahi.
+  </div>
+</div>
+
+<h2>2. Normal Solution vs display: contents</h2>
+<div class="card">
+  <p><strong>Normal fix:</strong> wrapper div ko hata dena (unwrap karna) — lekin ye hamesha possible nahi hota, kyunke shayad kisi <strong>different media query</strong> mein wo wrapper zaroori ho (jaise mobile view mein group ke around border/background chahiye ho).</p>
+  <p><strong>Better fix:</strong> us wrapping element par <code>display: contents;</code> laga do:</p>
+  <pre>.actions {
+  display: contents;
+}</pre>
+  <p>Result: <code>div.actions</code> ke andar wale saare children ab <strong>directly nav ke flex children</strong> ki tarah treat honge, aur gap sahi se sab par apply hoga.</p>
+</div>
+
+<h2>3. display: contents Karta Kya Hai?</h2>
+<div class="card">
+  <p>Ye CSS ko keh deta hai: <strong>"mujhe (is element ko) box ki tarah treat mat karo, sirf mere children ko render karo, jaise wo mere parent ke direct children hon."</strong></p>
+  <ul>
+    <li>Element <strong>DOM/JavaScript mein maujood rehta hai</strong> (delete nahi hota)</li>
+    <li>Lekin CSS ke liye ye <strong>layout ka hissa nahi rehta</strong> — box completely "skip" ho jaata hai</li>
+    <li>Isliye ab us element par <strong>koi bhi visual styling kaam nahi karti</strong> — background-color, border, padding waghera <strong>sab ignore</strong> ho jaate hain</li>
+  </ul>
+  <div class="warn">
+    ⚠️ Trade-off: agar aapko us wrapper par bhi koi styling (background-red, border) chahiye ho, to <code>display: contents</code> use nahi kar sakte, kyunke element visually gayab ho jaata hai.
+  </div>
+</div>
+
+<h2>4. Use Cases</h2>
+<div class="card">
+  <h3>Flexbox mein grouping ke bawajood flat layout</h3>
+  <p>Jab wrapper sirf semantic/structural reason (ya kisi doosri media query) ke liye chahiye ho, lekin uska koi visual box nahi chahiye — <code>display: contents</code> se andar ke elements seedha parent flex container ke children ban jaate hain.</p>
+
+  <h3>Grid mein Alternative</h3>
+  <p>CSS Grid mein isi tarah ke case ke liye <strong>subgrid</strong> bhi use ho sakta hai, lekin <code>display: contents</code> ek simple aur direct solution hai.</p>
+
+  <h3>flex-grow Example</h3>
+  <p>Ek resizable container hai jismein ek input field hai. Chahte hain ke resize hone par <strong>input khud grow kare</strong>:</p>
+  <pre>input {
+  flex-grow: 1;
+}</pre>
+  <p>Agar input ka parent wrapper <code>display: contents</code> nahi rakhta, to input actual flex container ka <strong>direct child hi nahi hoga</strong> — isliye <code>flex-grow</code> kaam nahi karega. <code>display: contents</code> lagane se input effectively flex container ka direct child ban jaata hai aur resize hone par sahi se grow karta hai.</p>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">Flexbox mein wrapper div ke andar wale items funky kyun lagte hain?</div>
+  <div class="a">Kyunke flex properties (jaise gap, flex-grow) sirf flex container ke direct children par apply hoti hain. Wrapper div khud direct child hai, lekin uske andar wale items nahi — isliye wo flex children ki tarah treat nahi hote.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">display: contents kya karta hai?</div>
+  <div class="a">Ye element ko layout se "skip" kar deta hai — element khud box ki tarah render nahi hota, lekin uske children directly parent ke children ki tarah flow karte hain (jaise wrapper exist hi nahi karta CSS ke lihaz se).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">display: contents lagane ke baad kya us element par background ya border laga sakte hain?</div>
+  <div class="a">Nahi — kyunke CSS ke liye ye element ab layout ka hissa hi nahi hai, koi bhi visual styling (background, border, padding) us par apply nahi hoti / ignore ho jaati hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">display: contents lagane ke baad kya element DOM/JavaScript se bhi hat jaata hai?</div>
+  <div class="a">Nahi — element JavaScript aur DOM mein maujood rehta hai, sirf CSS layout ke lihaz se "invisible" ho jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">Wrapper div ko sirf unwrap (remove) kyun nahi kar dete, display: contents ki zaroorat kyun padi?</div>
+  <div class="a">Kyunke wrapper kisi doosri media query mein zaroori ho sakta hai (jaise chhoti screen par us group ke around ek visual box chahiye ho) — isliye HTML se completely hatana theek nahi, sirf CSS ke through usse "layout-transparent" bana dena behtar solution hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">CSS Grid mein display: contents jaisa kaam karne wala doosra concept kya hai?</div>
+  <div class="a">Subgrid — grid mein isi tarah ke nested grouping problem ko handle karne ka alternative approach.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">Ek input par flex-grow: 1 lagane ke bawajood wo grow kyun nahi kar raha (jab wo ek wrapper div ke andar ho)?</div>
+  <div class="a">Kyunke flex-grow sirf flex container ke direct children par kaam karta hai — agar input kisi wrapper div ke andar hai jo khud flex child hai (par input nahi), to input flex container ka direct child hi nahi hai, isliye flex-grow ignore ho jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">Us wrapper div par display: contents lagane se flex-grow wala masla kaise hal hota hai?</div>
+  <div class="a">Wrapper "gayab" ho jaata hai layout ke lihaz se, isliye input effectively directly flex container ka child ban jaata hai — ab flex-grow: 1 sahi se apply hoti hai aur resize hone par input grow karta hai.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

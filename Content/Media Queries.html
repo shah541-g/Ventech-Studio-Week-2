@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>Responsive Design & Media Queries — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+  .stat{
+    display:inline-block;
+    background:#3fb95022;
+    color:#7ee787;
+    padding:2px 10px;
+    border-radius:14px;
+    font-size:0.85rem;
+    font-weight:600;
+  }
+
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>📱 Responsive Design & Media Queries — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: Media queries, breakpoints, mobile-first vs desktop-first, fluid responsive concepts</p>
+
+<h2>1. Media Queries Kya Hain?</h2>
+<div class="card">
+  <p>Media queries developers ko <strong>device ya viewport ki characteristics ke basis par</strong> conditional styles apply karne dete hain — isi wajah se ek website mobile aur desktop dono par sahi dikhti hai.</p>
+  <h3>Zaroori Meta Tag</h3>
+  <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+  <p>Ye tag ensure karta hai ke browser <strong>client ki actual screen width</strong> ko accurately detect kare — is ke bagair media queries sahi kaam nahi karti.</p>
+</div>
+
+<h2>2. Media Rule Ka Basic Syntax</h2>
+<div class="card">
+  <pre>@media (max-width: 600px) {
+  body {
+    background-color: blue;
+  }
+}</pre>
+  <p>Ye rule kehta hai: <strong>jab viewport width 600px ya usse kam ho</strong>, to body ka background blue ho jaaye.</p>
+</div>
+
+<h2>3. max-width Property</h2>
+<div class="card">
+  <p><code>max-width</code> media query un screens ko <strong>target</strong> karti hai jo specified breakpoint se <strong>chhoti/barabar</strong> hon.</p>
+  <p><strong>Use-case example:</strong> ek nav bar jo desktop ke liye design ki gayi hai, phone par sahi fit nahi hoti — <code>max-width</code> breakpoint use karke text, logo, aur links ki size adjust ki ja sakti hai taake nav bar phone par bhi theek dikhe.</p>
+  <p>Testing ke liye <strong>Chrome DevTools ka "toggle device bar"</strong> use kiya ja sakta hai — real-time mein different screen sizes preview karne ke liye.</p>
+</div>
+
+<h2>4. Common Device Breakpoints</h2>
+<div class="card">
+  <table>
+    <tr><th>Device</th><th>Typical Width Range</th></tr>
+    <tr><td>📱 Phones</td><td>320px – 600px</td></tr>
+    <tr><td>💻 Tablets</td><td>600px – 1024px</td></tr>
+    <tr><td>🖥️ Desktops/Laptops</td><td>1024px – 1440px</td></tr>
+  </table>
+  <p style="margin-top:10px;"><strong>Example (Flexbox cards):</strong></p>
+  <ul>
+    <li><strong>Desktop:</strong> <code>flex-direction: row</code> — cards ek line mein</li>
+    <li><strong>Tablet:</strong> cards ki height/width chhoti kar dena</li>
+    <li><strong>Phone:</strong> <code>flex-direction: column</code> — cards vertically stack</li>
+  </ul>
+</div>
+
+<h2>5. Mobile-First vs Desktop-First</h2>
+<div class="card">
+  <table>
+    <tr><th>Approach</th><th>Kaise Kaam Karta Hai</th></tr>
+    <tr>
+      <td><strong>Mobile-First</strong></td>
+      <td>Default styles <strong>sabse chhoti screen</strong> ke liye likhte hain, phir <code>min-width</code> media queries se badi screens ke liye styles add karte hain</td>
+    </tr>
+    <tr>
+      <td><strong>Desktop-First</strong></td>
+      <td>Default styles desktop ke liye, phir <code>max-width</code> se chhoti screens ke liye styles override karte hain</td>
+    </tr>
+  </table>
+  <div class="warn">
+    ⚠️ <code>min-width</code>, <code>max-width</code> ka <strong>opposite</strong> hai — ye specified breakpoint se <strong>badi/barabar</strong> screens ko target karta hai.
+  </div>
+  <p>Zyada developers <strong>mobile-first</strong> approach prefer karte hain, kyunke mobile traffic desktop se zyada hai:</p>
+  <p><span class="stat">Mobile: 60.74%</span> &nbsp; <span class="stat" style="background:#f7816622; color:#ffa198;">Desktop: 37.1%</span></p>
+  <p style="color:var(--muted); font-size:0.85rem;">(StatCounter Global Stats, June 2024)</p>
+</div>
+
+<h2>6. Fluid Responsive Design Ke Key Concepts</h2>
+<div class="card">
+  <h3>Media Scaling (Images/Videos)</h3>
+  <pre>img, video {
+  max-width: 100%;
+  height: auto;
+}</pre>
+  <p>Isse media apne container se <strong>overflow nahi karti</strong> aur <strong>proportionately resize</strong> hoti hai.</p>
+
+  <h3 style="margin-top:14px;">Relative Units</h3>
+  <p>Fixed units (px) ki jagah <strong>relative units</strong> — <code>%</code>, <code>em</code>, <code>rem</code> — use karna design ko zyada flexible banata hai.</p>
+
+  <h3 style="margin-top:14px;">Scalable Typography</h3>
+  <p>Font-sizes, line-heights, aur spacing ko viewport ke hisaab se adjust karne ke liye:</p>
+  <ul>
+    <li><code>calc()</code> function</li>
+    <li><code>vw</code> / <code>vh</code> units</li>
+  </ul>
+  <p>Isse text har device par <strong>readable</strong> rehta hai.</p>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">Media queries kya karti hain?</div>
+  <div class="a">Device ya viewport ki characteristics (jaise width) ke basis par conditional CSS styles apply karne deti hain, taake website alag-alag screens par sahi dikhe.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">Responsive design ke liye zaroori viewport meta tag ka kaam kya hai?</div>
+  <div class="a">Browser ko client ki actual screen width accurately detect karwata hai — is tag ke bagair media queries sahi tarah kaam nahi karti.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">@media (max-width: 600px) { ... } ka matlab kya hai?</div>
+  <div class="a">Ye styles tab apply hongi jab viewport width 600px ya usse kam ho.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">max-width media query kis type ki screens ko target karti hai?</div>
+  <div class="a">Jo specified breakpoint se chhoti ya barabar hon.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">min-width, max-width se kaise different hai?</div>
+  <div class="a">min-width, max-width ka opposite hai — ye specified breakpoint se badi ya barabar screens ko target karta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">Different screen sizes ko real-time mein test karne ke liye Chrome mein kaunsa tool use hota hai?</div>
+  <div class="a">Chrome DevTools ka "toggle device bar" (device toolbar) — Inspect window ke andar.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">Phones, tablets, aur desktops ke typical width breakpoints kya hain?</div>
+  <div class="a">Phones: 320px–600px. Tablets: 600px–1024px. Desktops/Laptops: 1024px–1440px.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">Flexbox cards example mein desktop aur phone par flex-direction kya hoga?</div>
+  <div class="a">Desktop par flex-direction: row (cards ek line mein). Phone par flex-direction: column (cards vertically stack).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">Mobile-first approach kaise kaam karta hai?</div>
+  <div class="a">Default styles sabse chhoti screen ke liye likhte hain, phir min-width media queries se progressively badi screens ke liye additional styles add karte hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">Desktop-first approach kaise kaam karta hai?</div>
+  <div class="a">Default styles desktop ke liye likhte hain, phir max-width media queries se chhoti screens ke liye un styles ko override karte hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">Zyada developers mobile-first approach kyun prefer karte hain?</div>
+  <div class="a">Kyunke mobile traffic desktop traffic se zyada hai (StatCounter Global Stats, June 2024 ke mutabiq mobile ~60.74% aur desktop ~37.1% market share).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12">Images/videos ko overflow hone se rokne aur proportionately resize karne ke liye kaunsi CSS properties use hoti hain?</div>
+  <div class="a">max-width: 100%; aur height: auto;</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="13">Fixed units (px) ki jagah relative units use karne se design ko kya faida hota hai?</div>
+  <div class="a">Design zyada flexible ban jaata hai — %, em, rem jaisi units parent ya root font-size ke relative hoti hain, isliye alag-alag screens par apne aap adjust ho jaati hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="14">Scalable typography banane ke liye kaunse CSS functions/units mention kiye gaye?</div>
+  <div class="a">calc() function, aur vw/vh units — inse font-size, line-height, aur spacing viewport ke hisaab se adjust hoti hai.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>

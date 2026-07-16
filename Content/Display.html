@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ur-Latn">
+<head>
+<meta charset="UTF-8">
+<title>CSS Display Properties — Active Recall</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --accent:#58a6ff;
+    --accent2:#f78166;
+    --green:#3fb950;
+    --yellow:#d29922;
+    --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,sans-serif;
+    max-width:880px;
+    margin:0 auto;
+    padding:30px 20px 80px;
+    line-height:1.6;
+  }
+  h1{
+    font-size:1.8rem;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:10px;
+  }
+  h2{
+    color:var(--accent);
+    margin-top:40px;
+    font-size:1.3rem;
+  }
+  h3{ color:var(--accent2); font-size:1.05rem; margin-bottom:6px;}
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  code{
+    background:#0d1117;
+    border:1px solid var(--border);
+    padding:2px 6px;
+    border-radius:5px;
+    color:var(--yellow);
+    font-family:'Cascadia Code',monospace;
+  }
+  pre{
+    background:#0d1117;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    overflow-x:auto;
+    font-family:'Cascadia Code',monospace;
+    font-size:0.9rem;
+  }
+  ul{padding-inline-start:22px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; margin-top:8px;}
+  th{text-align:left; padding:6px; color:var(--accent); border-bottom:1px solid var(--border);}
+  td{padding:6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .warn{
+    border-left:4px solid var(--yellow);
+    background:#d2992215;
+    padding:10px 14px;
+    border-radius:6px;
+    margin:10px 0;
+    font-size:0.92rem;
+  }
+
+  /* Recall section */
+  .recall-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    cursor:pointer;
+  }
+  .recall-box .q{ font-weight:600; color:var(--text); }
+  .recall-box .q::before{ content:"Q" attr(data-num) ". "; color:var(--accent); }
+  .recall-box .a{
+    display:none;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    color:var(--muted);
+  }
+  .recall-box.open .a{ display:block; }
+  .toggle-all{
+    background:var(--accent);
+    color:#0d1117;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    margin:10px 0 20px;
+  }
+
+  /* Demo boxes for SVGs */
+  .demo-label{ font-size:12px; fill:var(--muted); font-family:sans-serif;}
+</style>
+</head>
+<body>
+
+<h1>🧱 CSS Display Properties — Active Recall Notes</h1>
+<p style="color:var(--muted)">Video: Block, Inline, Inline-Block, None/Opacity/Visibility, Flex, Grid</p>
+
+<h2>1. Display: Block</h2>
+<div class="card">
+  <p>Default behavior — element <strong>poori available width</strong> le leta hai aur har naya element <strong>next line</strong> par drop hota hai.</p>
+  <ul>
+    <li>Width, height, padding, margin — sab kuch normally apply hota hai</li>
+    <li>Examples: <code>div</code>, <code>h1</code>–<code>h6</code>, <code>p</code>, <code>ul</code>, <code>li</code></li>
+  </ul>
+  <svg viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:360px;">
+    <rect x="10" y="10" width="380" height="30" fill="#1f6feb44" stroke="#58a6ff"/>
+    <text x="20" y="30" class="demo-label">block 1</text>
+    <rect x="10" y="50" width="380" height="30" fill="#3fb95044" stroke="#3fb950"/>
+    <text x="20" y="70" class="demo-label">block 2 (next line par)</text>
+  </svg>
+</div>
+
+<h2>2. Display: Inline</h2>
+<div class="card">
+  <p>Default for: <code>a</code>, <code>span</code>, <code>img</code>, <code>strong</code>, <code>small</code>.</p>
+  <div class="warn">
+    ⚠️ Inline elements sirf utni space lete hain jitni <strong>text render karne ke liye zaroori</strong> ho. Ye ek dusre ke <strong>saath (side by side)</strong> aate hain, next line par nahi jaate.
+  </div>
+  <h3>Limitations:</h3>
+  <ul>
+    <li><code>width</code> aur <code>height</code> set karna <strong>kaam nahi karta</strong></li>
+    <li><code>padding</code> aur <code>margin</code> — <strong>horizontal</strong> spacing apply hoti hai, lekin <strong>vertical</strong> spacing baaki elements ke liye ignore ho jaati hai (visually padding dikhti hai par layout shift nahi hoti)</li>
+  </ul>
+  <p>Use-case: paragraph ke andar kisi specific word/phrase ko style karna, jaise <code>&lt;span&gt;</code> se bold/red text.</p>
+</div>
+
+<h2>3. Display: Inline-Block</h2>
+<div class="card">
+  <p>Best of both worlds — elements <strong>side by side</strong> aate hain (jaise inline), lekin <code>width</code>, <code>height</code>, <code>padding</code>, aur <code>margin</code> (vertical bhi) sab kaam karte hain (jaise block).</p>
+  <p><strong>Default example:</strong> <code>button</code> element inline-block hota hai.</p>
+  <pre>li {
+  display: inline-block;
+  padding: 1rem;
+}</pre>
+  <p>Isse list items ek line mein aa jaate hain aur unpe padding bhi normally kaam karta hai.</p>
+</div>
+
+<h2>4. Hide Karne Ke 3 Tareeke</h2>
+<div class="card">
+  <table>
+    <tr><th>Property</th><th>Layout Space</th><th>Selectable?</th><th>Animatable?</th></tr>
+    <tr>
+      <td><code>display: none</code></td>
+      <td>❌ Remove ho jaata hai, layout shift hota hai</td>
+      <td>❌ Nahi</td>
+      <td>❌ Nahi (on/off switch hai, koi in-between state nahi)</td>
+    </tr>
+    <tr>
+      <td><code>opacity: 0</code></td>
+      <td>✅ Space reserved rehti hai</td>
+      <td>✅ Haan (still clickable/selectable)</td>
+      <td>✅ Haan (0 → 1 gradually)</td>
+    </tr>
+    <tr>
+      <td><code>visibility: hidden</code></td>
+      <td>✅ Space reserved rehti hai</td>
+      <td>❌ Nahi</td>
+      <td>Limited</td>
+    </tr>
+  </table>
+  <p style="margin-top:10px; color:var(--muted); font-size:0.9rem;">opacity: 0 ka concept white-text-on-white-background jaisa hai — dikhta nahi lekin wahin maujood hai.</p>
+</div>
+
+<h2>5. Display: Flex</h2>
+<div class="card">
+  <p>Sabse popular aur simple layout method — <strong>one-directional</strong> (ek waqt mein sirf row ya column).</p>
+  <pre>ul {
+  display: flex;
+  flex-direction: row; /* ya column */
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}</pre>
+  <ul>
+    <li><code>flex-direction: row</code> (default) — items horizontally ek line mein</li>
+    <li><code>flex-direction: column</code> — items vertically stack hote hain</li>
+    <li><code>justify-content</code> — main axis par alignment (center, flex-start, flex-end, space-around/between/evenly)</li>
+    <li><code>align-items</code> — cross axis par alignment</li>
+  </ul>
+  <div class="warn">
+    ⚠️ <strong>Important:</strong> jab <code>flex-direction: row → column</code> switch karte ho, to <code>justify-content</code> aur <code>align-items</code> ka role <strong>reverse</strong> ho jaata hai — jo pehle horizontal control karta tha wo ab vertical control karega.
+  </div>
+  <ul>
+    <li><code>gap</code> — items ke darmiyan spacing (padding ki zaroorat nahi)</li>
+    <li><code>align-self</code> — individual child element ki position container ke default alignment se alag override karne ke liye</li>
+  </ul>
+</div>
+
+<h2>6. Display: Grid</h2>
+<div class="card">
+  <p>Flexbox jaisa hi hai, lekin <strong>two-dimensional</strong> — columns aur rows dono ek saath control hote hain. Isliye flexbox se zyada powerful lekin zyada complex bhi.</p>
+  <pre>.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr 1fr;
+}</pre>
+  <ul>
+    <li><code>grid-template-columns: 1fr 1fr 1fr</code> = <code>repeat(3, 1fr)</code> — teen equal-width columns</li>
+    <li>Agar rows define na karein, extra elements ke liye grid <strong>automatically naye rows bana deta hai</strong></li>
+  </ul>
+  <h3 style="margin-top:14px;">Element Position Karna</h3>
+  <p>Grid lines <strong>1 se count</strong> honi shuru hoti hain (chahe row ho ya column):</p>
+  <pre>grid-row: 2 / 3;     /* dusri row mein */
+grid-column: 5 / 6;  /* paanchvi column mein */</pre>
+  <p style="color:var(--muted); font-size:0.9rem;">Use-case: complex layouts (jaise photo gallery grids) jahan flexbox se bohot saare nested divs lagte — grid mein ek hi container se ho jaata hai.</p>
+</div>
+
+<h2>7. Kam Use Hone Wale Displays</h2>
+<div class="card">
+  <p><code>display: table</code>, <code>table-cell</code>, <code>list-item</code> waghera bhi maujood hain jo element ko us tag ki tarah behave karwate hain, lekin practically bohot kam use hote hain.</p>
+</div>
+
+<h2>📝 Active Recall</h2>
+<p style="color:var(--muted); font-size:0.9rem;">Question par click karo — answer reveal hoga. Khud pehle try karo, phir check karo.</p>
+<button class="toggle-all" onclick="toggleAll()">Sab Open/Close Karo</button>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="1">Display block ka default behavior kya hota hai?</div>
+  <div class="a">Poori available horizontal width le leta hai aur agla element automatically next line par chala jaata hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="2">Inline elements par width/height set karne ki koshish karo to kya hota hai?</div>
+  <div class="a">Kuch nahi hota — inline elements par explicit width aur height kaam nahi karte (jaise a, span, img, strong, small).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="3">Inline element par padding lagayein to kya farq padta hai?</div>
+  <div class="a">Padding visually dikhti hai (horizontal spacing bhi apply hoti hai), lekin vertical padding ki wajah se dusre elements apni position change nahi karte — wo is vertical space ko ignore kar dete hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="4">Inline-block, inline aur block se kaise mix hota hai?</div>
+  <div class="a">Elements side-by-side aate hain (inline ki tarah), lekin width, height, aur vertical padding/margin bhi kaam karte hain (block ki tarah). Button element by default inline-block hota hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="5">display: none, opacity: 0, aur visibility: hidden mein kya farq hai?</div>
+  <div class="a">display:none — element DOM se layout ke lihaz se hat jaata hai, space collapse ho jaata hai, animate nahi ho sakta. opacity:0 — space reserved rehti hai, element phir bhi selectable/clickable hota hai, animate ho sakta hai. visibility:hidden — space reserved rehti hai lekin element select nahi ho sakta.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="6">display:none ko animate kyun nahi kiya ja sakta?</div>
+  <div class="a">Kyunke ye ek on/off switch ki tarah kaam karta hai — sirf none se block (ya vice versa) jump karta hai, koi gradual in-between state nahi hoti (opacity ki tarah 0 se 1 tak).</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="7">Flexbox one-directional kyun kehlata hai?</div>
+  <div class="a">Kyunke ek waqt mein flex-direction sirf row ya column mein se ek hoti hai — items ya to horizontally line up hote hain ya vertically, dono ek saath nahi.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="8">flex-direction ko row se column mein change karne par kya reverse ho jaata hai?</div>
+  <div class="a">justify-content aur align-items ka role reverse ho jaata hai — jo pehle horizontal alignment control karta tha (justify-content), column mein switch karne ke baad wo vertical control karne lagta hai, aur align-items horizontal control karta hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="9">Flexbox mein items ke darmiyan spacing dene ka aasan tareeka kya hai (padding ke bagair)?</div>
+  <div class="a"><code>gap</code> property — jaise <code>gap: 2rem;</code>, ye directly container par lagti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="10">Flex container ke andar ek individual child element ki position alag se override karne ke liye kya use hota hai?</div>
+  <div class="a"><code>align-self</code> — is se container ke default align-items se hat kar us specific element ki apni alignment set ki ja sakti hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="11">Grid, flexbox se kaise different hai?</div>
+  <div class="a">Flexbox one-dimensional hota hai (row ya column), jabke Grid two-dimensional hai — rows aur columns dono ek saath define aur control kiye ja sakte hain. Isse zyada powerful hai lekin thora zyada complex bhi.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="12"><code>grid-template-columns: repeat(3, 1fr);</code> ka matlab kya hai?</div>
+  <div class="a">Teen equal-width columns banao, har column available space ka barabar hissa (1 fraction) le. Ye <code>1fr 1fr 1fr</code> likhne jaisa hi hai.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="13">Grid lines ka counting kahan se start hoti hai?</div>
+  <div class="a">1 se — chahe row ho ya column, dono directions mein grid lines 1 se count honi shuru hoti hain.</div>
+</div>
+
+<div class="recall-box" onclick="this.classList.toggle('open')">
+  <div class="q" data-num="14">Agar grid mein columns define hon lekin rows na ki gayi hon, aur elements zyada hon to kya hota hai?</div>
+  <div class="a">Grid automatically extra rows create kar deta hai jitni zaroorat ho, taake baaki elements accommodate ho sakein.</div>
+</div>
+
+<script>
+function toggleAll(){
+  const boxes = document.querySelectorAll('.recall-box');
+  const anyClosed = [...boxes].some(b => !b.classList.contains('open'));
+  boxes.forEach(b => b.classList.toggle('open', anyClosed));
+}
+</script>
+
+</body>
+</html>
