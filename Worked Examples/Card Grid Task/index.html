@@ -231,17 +231,10 @@
     <script>
       let toggleSidebar = () => {
         let sidebar = document.getElementsByClassName("sidebar")[0];
-        sidebar.classList.contains("display-me")
-          ? sidebar.classList.remove("display-me")
-          : sidebar.classList.add("display-me");
+        sidebar.classList.toggle("display-me")
         let toggleButton = document.getElementsByClassName("toggle-sidebar")[0];
-        if (toggleButton.classList.contains("left")) {
-          toggleButton.classList.remove("left");
-          toggleButton.classList.add("right");
-        } else {
-          toggleButton.classList.remove("right");
-          toggleButton.classList.add("left");
-        }
+        toggleButton.classList.toggle("left");
+        toggleButton.classList.toggle("right");
       };
     </script>
   </body>
