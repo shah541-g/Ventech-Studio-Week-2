@@ -12,12 +12,16 @@ header{
   align-items: center;
   margin: 1rem;
 }
+.menu-btn{
+  all: unset;
+  padding: 0.5rem;
+}
+
 .search-wrapper,.profile-details-section{
   display: none;
 }
 .bell-icon{
   position: relative;
-  /* height: 50px; */
   width: 30px;
 
 }
@@ -56,7 +60,7 @@ header{
   overflow-y: auto;
   top: 0;
   left: 0;
-  display: flex;
+  display: none; /*flex*/
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -101,7 +105,7 @@ header{
 .search-wrapper{
   width: 80%;
   height: 3rem;
-  display: flex;
+  display: none; /*flex*/
   align-self: center;
   position: relative;
   border-radius: 1rem;
@@ -164,6 +168,36 @@ header{
 .upgrade-btn:hover{
   background: #4b4de7;;
 }
+
+.cross-btn{
+  all: unset;
+  position: fixed;
+  top: 10px;
+  right: 10%;
+  background: #68696b;
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+}
 .open{
   display: block;
+}
+
+.total-stats-cards{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-template-rows: repeat(2,1fr);
+  gap: 1rem;
+  padding: 2rem;
+}
+.total-stats-subsection{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+.icon-wrapper{
+  background: #6365f1b3;
+  padding: 0.5rem;
+  border-radius: 9px;
 }

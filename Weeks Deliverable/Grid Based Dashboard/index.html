@@ -8,9 +8,11 @@
   </head>
   <body>
     <header class="header">
-      <div class="menu-img-wrapper">
-        <img src="./assets/menu.svg" alt="" class="menu-icon" />
-      </div>
+      <button class="menu-btn">
+        <div class="menu-img-wrapper">
+          <img src="./assets/menu.svg" alt="" class="menu-icon" />
+        </div>
+      </button>
       <h2>Dashboard</h2>
       <div class="search-wrapper">
         <input type="search" name="" id="" placeholder="Search..." />
@@ -38,7 +40,12 @@
       </div>
     </header>
     <main>
-      <aside class="sidebar open">
+      <aside class="sidebar">
+        <div class="cross-btn-wrapper">
+          <button class="cross-btn">
+            <img src="./assets/cross.svg" alt="" class="cross-icon" />
+          </button>
+        </div>
         <header class="sidebar-header">
           <div class="logo-wrapper">
             <img src="./assets/dashboard.svg" alt="" class="logo" />
@@ -133,7 +140,13 @@
             <h3 class="sidebar-option">Settings</h3>
           </div>
           <div class="search-wrapper open">
-            <input type="search" name="" id="" class="search-input" placeholder="    Search..." />
+            <input
+              type="search"
+              name=""
+              id=""
+              class="search-input"
+              placeholder="    Search..."
+            />
             <div class="search-img-wrapper">
               <img src="./assets/search.svg" alt="" class="search-icon" />
             </div>
@@ -153,8 +166,52 @@
           <button class="upgrade-btn">Upgrade Now</button>
         </footer>
       </aside>
-      <article></article>
+      <article>
+        <section class="total-stats-cards">
+          <section class="total-stats-subsection total-stats-subsection-1">
+            <div class="icon-wrapper">
+              <img src="./assets/community.svg" alt="" class="community-icon" />
+            </div>
+            <div class="stats-section">
+              <p class="stats-name">Total Users</p>
+              <p class="stats-value">12,540</p>
+              <span class="growth-rate">↑ 12.5%</span>
+            </div>
+          </section>
+          <section class="total-stats-subsection total-stats-subsection-2">
+            <div class="icon-wrapper">
+              <img src="./assets/bag.svg" alt="" class="orders-icon" />
+            </div>
+            <div class="stats-section">
+              <p class="stats-name">Total Orders</p>
+              <p class="stats-value">8,430</p>
+              <span class="growth-rate">↑ 8.2%</span>
+            </div>
+          </section>
+          <section class="total-stats-subsection total-stats-subsection-3">
+            <div class="icon-wrapper">
+              <img src="./assets/dollar.svg" alt="" class="revenue-icon" />
+            </div>
+            <div class="stats-section">
+              <p class="stats-name">Total Revenue</p>
+              <p class="stats-value">$24,780</p>
+              <span class="growth-rate">↑ 15.6%</span>
+            </div>
+          </section>
+          <section class="total-stats-subsection total-stats-subsection-4">
+            <div class="icon-wrapper">
+              <img src="./assets/line graph.svg" alt="" class="growth-rate-icon" />
+            </div>
+            <div class="stats-section">
+              <p class="stats-name">Conversion Rate</p>
+              <p class="stats-value">3.24%</p>
+              <span class="growth-rate">↑ 6.1%</span>
+            </div>
+          </section>
+        </section>
+      </article>
     </main>
     <footer></footer>
+    <script src="./index.js"></script>
   </body>
 </html>
